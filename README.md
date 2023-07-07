@@ -1,7 +1,6 @@
 Database folder is missing <br/>
 
 Download  <a href="https://github.com/metmuseum/openaccess/blob/master/MetObjects.csv ">metmuseum csv file</a>
-
 the branch is the backend branch 
 It is composed of x phases : 
 Preprocessing : converting csv files from different resources into painting/wallpaper objects

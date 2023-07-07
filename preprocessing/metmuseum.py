@@ -6,6 +6,7 @@ import html
 import numpy as np
 import pandas as pd
 from pathlib import Path
+from tqdm import tqdm
 
 pd.set_option('display.max_colwidth', None)
 
@@ -35,7 +36,7 @@ def filter():
 def getImageURL(url):
     if not validators.url(url):
         print(f"url is not valid , {url}")
-        return ""
+        return None
     try:
         r = requests.get(url , headers={'User-Agent': 'Mozilla/5.0'})
         html_page = html.unescape(r.text)
@@ -43,34 +44,32 @@ def getImageURL(url):
     except Exception as err:
         print("ERR OCCURED : \n ")
         print(err)
-        return ""
+        return None
     URLS = []
     for a in soup.find_all('a',{'class':'gtm__download__image'}, href=True):
         URLS.append(a['href'])
     if(len(URLS) == 0):
         print(f"Could not get image URL from : {url}")
-        return ""
+        return None
     return URLS[0]
-
-
-
-
 
 
 def main():
     csv_file = Path("../Database/metmuseum_filtered.csv")
     if csv_file.is_file():
         paintings = pd.read_csv("../Database/metmuseum_filtered.csv")
-        for i in range(len(paintings)):
+        for i in tqdm(range(len(paintings))):
             url = paintings.iloc[i]["Link Resource"]
-            print(paintings.iloc[i]["Artist Display Name"])
-            print(getImageURL(url))
-            if(i > 3):
-                break
+            print(paintings.iloc[i]["Link Resource"])
+            image_url = getImageURL(url)
+            if(image_url is not None):
+                paintings.insert(i,"image_url",image_url)
+        paintings.to_csv("../Database/metmuseum_filtered.csv",encoding='utf-8', index=False)
     else:
         print("filtering csv file")
         filter()
 
+
+
 if __name__ == "__main__":
-    #getImageURL("http://www.metmuseum.org/art/collection/search/483")
     main()
