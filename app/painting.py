@@ -14,7 +14,7 @@ def get_paintings(db: Session = Depends(get_db), limit: int = 10, page: int = 1,
         models.Painting.title.contains(search)).limit(limit).offset(skip).all()
     return {'status': 'success', 'results': len(paintings), 'paintings': paintings}
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
+@router.post('/painting', status_code=status.HTTP_201_CREATED)
 def create_painting(payload: schemas.PaintingBaseSchema, db: Session = Depends(get_db)):
     new_painting = models.Painting(**payload.dict())
     db.add(new_painting)
@@ -22,6 +22,12 @@ def create_painting(payload: schemas.PaintingBaseSchema, db: Session = Depends(g
     db.refresh(new_painting)
     return {"status": "success", "painting": new_painting}
 
+@router.post('/paintings', status_code=status.HTTP_201_CREATED)
+def create_paintings(payload: list[schemas.PaintingBaseSchema], db: Session = Depends(get_db)):
+    new_paintings = [models.Painting(**p.dict()) for p in payload]
+    db.bulk_save_objects(new_paintings)
+    db.commit()
+    return {"status": "success", "paintings": new_paintings}
 @router.patch('/{paintingId}')
 def update_painting(paintingId: str, payload: schemas.PaintingBaseSchema, db: Session = Depends(get_db)):
     painting_query = db.query(models.Painting).filter(models.Painting.id == paintingId)
