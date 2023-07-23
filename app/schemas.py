@@ -1,16 +1,16 @@
-from datetime import datetime
 from typing import List
 from pydantic import BaseModel
 
 
-class NoteBaseSchema(BaseModel):
+class PaintingBaseSchema(BaseModel):
     id: str | None = None
     title: str
-    content: str
-    category: str | None = None
-    published: bool = False
-    createdAt: datetime | None = None
-    updatedAt: datetime | None = None
+    artistDisplayName = str
+    objectBeginDate = int
+    objectEndDate = int
+    collection = str
+    resourceLink = str
+    imageLink = str
 
     class Config:
         orm_mode = True
@@ -18,7 +18,7 @@ class NoteBaseSchema(BaseModel):
         arbitrary_types_allowed = True
 
 
-class ListNoteResponse(BaseModel):
+class ListPaintingResponse(BaseModel):
     status: str
     results: int
-    notes: List[NoteBaseSchema]
+    paintings: List[PaintingBaseSchema]

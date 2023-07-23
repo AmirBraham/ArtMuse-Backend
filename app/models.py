@@ -1,18 +1,17 @@
 from .database import Base
-from sqlalchemy import TIMESTAMP, Column, String, Boolean
+from sqlalchemy import TIMESTAMP, Column, String, Boolean,Integer
 from sqlalchemy.sql import func
 from fastapi_utils.guid_type import GUID, GUID_SERVER_DEFAULT_POSTGRESQL
 
 
-class Note(Base):
+class Painting(Base):
     __tablename__ = 'paintings'
     id = Column(GUID, primary_key=True,
                 server_default=GUID_SERVER_DEFAULT_POSTGRESQL)
     title = Column(String, nullable=False)
-    content = Column(String, nullable=False)
-    category = Column(String, nullable=True)
-    published = Column(Boolean, nullable=False, server_default='True')
-    createdAt = Column(TIMESTAMP(timezone=True),
-                       nullable=False, server_default=func.now())
-    updatedAt = Column(TIMESTAMP(timezone=True),
-                       default=None, onupdate=func.now())
+    artistDisplayName = Column(String, nullable=False)
+    objectBeginDate = Column(Integer, nullable=True)
+    objectEndDate = Column(Integer, nullable=False)
+    collection = Column(String,nullable=False)
+    resourceLink = Column(String,nullable=False)
+    imageLink = Column(String,nullable=False)

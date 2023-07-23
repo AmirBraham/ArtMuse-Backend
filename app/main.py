@@ -1,14 +1,29 @@
 from fastapi import FastAPI
+from app import models,painting
+
+from fastapi.middleware.cors import CORSMiddleware
+from .database import engine
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 PAINTINGS_COLLECTIONS = {
     "metmuseum":"The Metropolitan Museum of Art"
 }
+origins = [
+    "http://localhost:3000",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(painting.router, tags=['Paintings'], prefix='/api/paintings')
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
 @app.get("/paintings_collections")
 async def paintings_collections():
     return list(PAINTINGS_COLLECTIONS.values())
