@@ -10,10 +10,12 @@ headers = {
     'Content-Type': 'application/json',
 }
 
+DEV= False
 
-
-
-API_URL = "http://127.0.0.1:8000/api/"
+if(DEV):
+    API_URL = "http://127.0.0.1:8000/api/"
+else:
+    API_URL = "https://artmuse-2b28bb190030.herokuapp.com/api/"
 
 
 def populate_db_metmuseum():
