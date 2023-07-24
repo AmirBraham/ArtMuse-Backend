@@ -9,6 +9,9 @@ import os
 
 POSTGRES_URL = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOSTNAME}:{settings.DATABASE_PORT}/{settings.POSTGRES_DB}?sslmode={settings.SSL_MODE}"
 
+if(settings.ON_HEROKU):
+    POSTGRES_URL = settings.DATABASE_URL
+
 engine = create_engine(
     POSTGRES_URL, echo=True
 )
