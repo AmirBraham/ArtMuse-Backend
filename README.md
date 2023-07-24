@@ -8,3 +8,6 @@ Database : uploading these wallpapers to database , generate a user database etc
 FASTAPI that communicated with the application to fetch wallpapers
 
 CRUD inspired by https://codevoweb.com/build-a-crud-app-with-fastapi-and-sqlalchemy/
+
+
+CREATE Spacefile with : 
