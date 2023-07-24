@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str
     POSTGRES_HOSTNAME: str
     SSL_MODE: str
-    DATABASE_URL: str
+    DATABASE_URL: str | None
 
     class Config:
         env_file = '.env'
