@@ -32,7 +32,5 @@ export default function ChangeWallpaper() {
     }, [isSending]) // update the callback if the state changes
    
   // Necessary because we will have to use Greet as a component later.
-  return <div>
-    <button title='hello' disabled={isSending} onClick={sendRequest}>test</button>
-    </div>
+  return <button style={{backgroundColor:'red',height:20}} title='hello' disabled={isSending} onClick={sendRequest}>test</button>
 }
