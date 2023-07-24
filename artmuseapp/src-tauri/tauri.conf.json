@@ -54,18 +54,19 @@
     "updater": {
       "active": false
     },
+    "macOSPrivateApi": true,
     "windows": [
       {
         "fullscreen": false,
         "height": 300,
         "resizable": false,
         "title": "menubar",
-        "width": 300,
+        "width": 400,
         "visible": false,
         "hiddenTitle": true,
         "decorations": false,
         "focus": false,
-        "transparent": false
+        "transparent": true
       }
     ],
     "systemTray": {
