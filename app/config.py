@@ -16,7 +16,7 @@ class Settings(BaseSettings):
 
 
 on_heroku = False
-if 'YOUR_ENV_VAR' in os.environ:
+if 'ON_HEROKU' in os.environ:
     on_heroku = True
 print(f"on heroku : {on_heroku}")
 if (on_heroku):
