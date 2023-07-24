@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-from app import models,painting
+import models
+import painting
 
 from fastapi.middleware.cors import CORSMiddleware
-from .database import engine
+from database import engine
 
 models.Base.metadata.create_all(bind=engine)
 
