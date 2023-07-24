@@ -3,6 +3,7 @@ import os
 
 
 class Settings(BaseSettings):
+    ON_HEROKU:str | None
     DATABASE_PORT: int
     POSTGRES_PASSWORD: str
     POSTGRES_USER: str
@@ -25,7 +26,9 @@ if (on_heroku):
                         POSTGRES_DB=os.getenv("POSTGRES_DB"),
                         POSTGRES_HOST=os.getenv("POSTGRES_HOST"),
                         POSTGRES_HOSTNAME=os.getenv("POSTGRES_HOSTNAME"),
-                        SSL_MODE=os.getenv("SSL_MODE")
+                        SSL_MODE=os.getenv("SSL_MODE"),
+                        ON_HEROKU="1"
                         )
 else:
     settings = Settings()
+
