@@ -4,13 +4,13 @@ from pydantic import BaseModel
 
 class PaintingBaseSchema(BaseModel):
     id: str | None = None
-    title: str
-    artistDisplayName = str
-    objectBeginDate = int
-    objectEndDate = int
-    collection = str
-    resourceLink = str
-    imageLink = str
+    title: str = None
+    artistDisplayName: str 
+    objectBeginDate: int
+    objectEndDate: int
+    collection: str
+    resourceLink: str
+    imageLink :str
 
     class Config:
         orm_mode = True

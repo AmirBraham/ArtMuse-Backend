@@ -3,6 +3,7 @@ autopep8
 certifi
 charset-normalizer
 click
+pandas
 colorama
 dnspython
 email-validator
@@ -34,3 +35,8 @@ urllib3
 uvicorn
 watchfiles
 websockets
+bs4
+tqdm
+numpy
+validators
+lxml

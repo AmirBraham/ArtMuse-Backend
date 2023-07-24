@@ -76,12 +76,13 @@ def main():
         for i in tqdm(range(len(paintings))):
             url = paintings.iloc[i]["Link Resource"]
             image_url = getImageURL(url)
-            print(image_url)
             if (image_url is not None):
                 paintings.at[i, "image_url"] = image_url
             if (i % 10 == 0 and i > 0):
                 paintings.to_csv(
                     "../Database/metmuseum_filtered.csv", encoding='utf-8', index=False)
+        paintings = paintings[paintings['Title'].notna()]
+        paintings = paintings[paintings['Artist Display Name'].notna()]
         paintings.to_csv("../Database/metmuseum_filtered.csv",encoding='utf-8', index=False)
     else:
         print("filtering csv file")
