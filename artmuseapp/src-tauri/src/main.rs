@@ -4,6 +4,12 @@ use tauri::{Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,CustomMenuItem}
 use tauri_plugin_positioner::{Position, WindowExt};
 use wallpaper;
 
+#[tauri::command]
+fn greet(name: &str) -> String {
+   println!("Hello, {}!", name);
+   format!("Hello, {}!", name)
+}
+
 fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
     let system_tray_menu = SystemTrayMenu::new().add_item(quit);
@@ -47,6 +53,7 @@ fn main() {
           }
           _ => {}
       })
+      .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
