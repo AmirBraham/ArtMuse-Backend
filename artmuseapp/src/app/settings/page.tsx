@@ -1,5 +1,7 @@
+'use client';
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { set_interval } from "../state/manager";
 
 export default function Settings() {
     return <main className="flex flex-col min-h-screen  bg-neutral-100 flex-col items-center justify-between">
@@ -13,6 +15,8 @@ export default function Settings() {
                 <p className="text-black text-xl text-center ">Settings</p>
             </div>
         </div>
+
+        <button title="change interval" onClick={() => set_interval(5)}>Change Interval</button>
 
     </main>
 }

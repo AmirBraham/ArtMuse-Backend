@@ -26,11 +26,13 @@ export default function ChangeWallpaper() {
       throw new Error('Failed to fetch data')
     }
     setIsSending(false)
+    /*
     invoke<string>('greet', { name: JSON.stringify(data) })
       .then((val) => {
         console.log(val)
       })
       .catch(console.error)
+      */
   }, [isSending]) // update the callback if the state changes
   // disabled={isSending} onClick={sendRequest}
   // Necessary because we will have to use Greet as a component later.

@@ -5,8 +5,8 @@ use tauri_plugin_positioner::{Position, WindowExt};
 use wallpaper;
 
 #[tauri::command]
-fn get_state() -> String {
-   println!("frontend requests current state");
+fn greet() -> String {
+   println!("greet , leaving this for future use ");
    format!("state returned")
 }
 
@@ -14,6 +14,7 @@ fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
     let system_tray_menu = SystemTrayMenu::new().add_item(quit);
     tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_positioner::init())
         .system_tray(SystemTray::new().with_menu(system_tray_menu))
         .on_system_tray_event(|app, event| {
@@ -53,7 +54,7 @@ fn main() {
           }
           _ => {}
       })
-      .invoke_handler(tauri::generate_handler![get_state])
+      .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

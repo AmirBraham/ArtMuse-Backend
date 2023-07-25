@@ -1,19 +1,24 @@
-import { invoke } from '@tauri-apps/api/tauri'
+import { Store } from "tauri-plugin-store-api";
 
-export const get_state = () => {
-    invoke<string>('get_state')
-    .then((state) => {
-    alert(state)
-      console.log(state)
-    })
-    .catch(console.error)
+const store = new Store(".settings.dat");
+
+
+
+
+
+export const get_state =async () => {
+ 
+  const val = await store.get("interval");
+  if(val)
+    alert(JSON.stringify(val))
+  await store.save();
+
+
 }
 
-const change_interval = () => {
-    invoke<string>('get_state')
-    .then((state) => {
-      console.log(state)
-    })
-    .catch(console.error)
+export const set_interval = async (interval:number) => {
+  await store.set("interval", { value: interval });
+  await store.save();
+
 }
 
