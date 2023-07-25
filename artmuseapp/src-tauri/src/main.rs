@@ -5,9 +5,9 @@ use tauri_plugin_positioner::{Position, WindowExt};
 use wallpaper;
 
 #[tauri::command]
-fn greet(name: &str) -> String {
-   println!("Hello, {}!", name);
-   format!("Hello, {}!", name)
+fn get_state() -> String {
+   println!("frontend requests current state");
+   format!("state returned")
 }
 
 fn main() {
@@ -53,7 +53,7 @@ fn main() {
           }
           _ => {}
       })
-      .invoke_handler(tauri::generate_handler![greet])
+      .invoke_handler(tauri::generate_handler![get_state])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

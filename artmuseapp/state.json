@@ -1,0 +1,18 @@
+{
+    "page":1,
+    "limit":10,
+    "run_automatically_on_startup":"True",
+    "take_only_from_favorites":"False",
+    "favorites":[{
+        "title":"",
+        "artist":"",
+        "image_url":""
+    }],
+    "current_wallpaper":{
+        "index":3,
+        "title":"",
+        "artist":"",
+        "image_url":""
+    },
+    "interval":10
+}

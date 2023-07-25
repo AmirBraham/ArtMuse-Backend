@@ -34,8 +34,8 @@ export default function ChangeWallpaper() {
   }, [isSending]) // update the callback if the state changes
   // disabled={isSending} onClick={sendRequest}
   // Necessary because we will have to use Greet as a component later.
-  return (<Link href="settings">    
-  <Cog6ToothIcon className="h-5 w-5 " />
+  return (<Link href="settings">
+    <Cog6ToothIcon className="h-5 w-5 " />
   </Link>)
 
 }
