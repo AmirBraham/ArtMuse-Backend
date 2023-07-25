@@ -5,7 +5,6 @@ import ChangeWallpaper from './ChangeWallpaper'
 import Logo from './Logo'
 import Favorite from './Favorite'
 import PaintingDetails from './PaintingDetails'
-import { get_state } from './state/manager'
 import { ArrowRightIcon, ArrowLeftIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 
 export default function Home() {
@@ -15,7 +14,7 @@ export default function Home() {
         <div className='flex flex-row basis-3/4 '>
           <div className="basis-3/4 pt-1 flex space-x-2" >
             <div className="flex-none h-5 w-5" >
-              <button onClick={get_state}>
+              <button>
               <Favorite  />
               </button>
             </div>
