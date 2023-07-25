@@ -9,6 +9,8 @@ const store = new Store(".settings.dat");
 
 export const init = async () => {
   const has_been_initialized: boolean | null = await store.get("has_been_initialized")
+  console.log("has been initialized : " + has_been_initialized)
+  const wallpaper = await get_current_wallpaper()
   if (has_been_initialized) {
     console.log("already initialized")
     return true
@@ -18,7 +20,7 @@ export const init = async () => {
   await set_page(1)
   await store.set("favorites", [])
   await store.set("has_been_initialized", true);
-  const painting:Wallpaper = await getWallpaper(1,1)
+  const painting: Wallpaper = await getWallpaper(1, 1)
   await set_current_wallpaper(painting)
   await store.save()
   return false
@@ -56,9 +58,13 @@ export const add_favorite = async (favorite: Wallpaper) => {
 }
 
 export const get_current_wallpaper = async () => {
-  const currect_wallpaper = await store.get("current_wallpaper")
-  if (currect_wallpaper != null)
+  const currect_wallpaper: Wallpaper | null = await store.get("current_wallpaper")
+  if (currect_wallpaper != null && Object.keys(currect_wallpaper).length !== 0)
     return currect_wallpaper
+  const painting: Wallpaper = await getWallpaper(1, 1)
+
+  await set_current_wallpaper(painting)
+  return {}
   // if we reached this point , this is the first time the user has opened our app , we will need to fetch a random wallpaper and set other params
 }
 
@@ -102,15 +108,19 @@ export const toggle_start_on_startup = async () => {
 
 export const set_page = async (value: number) => {
   let final_value = value
-  if (value <= 0)
+  if (value <= 0) {
     console.log("page value can't be less than 1 , setting it to 1 ")
-  final_value = 1
+    final_value = 1
+  }
+
   await store.set("page", final_value)
   await store.save()
+  console.log(final_value)
+  return final_value
 }
 
 export const get_page = async () => {
-  const curr_page = await store.get("page")
+  const curr_page: number | null = await store.get("page")
   if (curr_page != null)
     return curr_page
   console.log("first time getting page , setting it to 1")
@@ -128,7 +138,7 @@ export const set_limit = async (value: number) => {
 }
 
 export const get_limit = async () => {
-  const curr_page = await store.get("limit")
+  const curr_page: number | null = await store.get("limit")
   if (curr_page != null)
     return curr_page
   console.log("first time getting limit , setting it to 1")
