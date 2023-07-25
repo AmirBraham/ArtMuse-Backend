@@ -3,6 +3,7 @@
 import React, { useState, useCallback } from 'react'
 import { invoke } from '@tauri-apps/api/tauri'
 import { Cog6ToothIcon } from '@heroicons/react/24/outline'
+import Link from 'next/link'
 
 export default function ChangeWallpaper() {
   const [isSending, setIsSending] = useState(false)
@@ -31,10 +32,10 @@ export default function ChangeWallpaper() {
       })
       .catch(console.error)
   }, [isSending]) // update the callback if the state changes
-
+  // disabled={isSending} onClick={sendRequest}
   // Necessary because we will have to use Greet as a component later.
-  return (<button disabled={isSending} onClick={sendRequest}>    
+  return (<Link href="settings">    
   <Cog6ToothIcon className="h-5 w-5 " />
-  </button>)
+  </Link>)
 
 }

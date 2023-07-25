@@ -12,5 +12,4 @@ export default function PaintingDetails() {
         1880 - 1890
         </h4>
     </div>
-
 }
