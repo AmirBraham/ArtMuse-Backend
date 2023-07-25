@@ -2,14 +2,14 @@ import { StarIcon } from '@heroicons/react/24/outline'
 
 export default function PaintingDetails() {
     return <div>
-        <h2>
-            Seventh Regiment on Review, Washington Square, New York
-        </h2>
+        <h1>
+        Mountain Scene
+        </h1>
         <h4>
-        Otto Botticher
+        Albert Bierstadt
         </h4>
         <h4>
-        1851
+        1880 - 1890
         </h4>
     </div>
 
