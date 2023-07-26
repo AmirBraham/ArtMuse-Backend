@@ -27,7 +27,14 @@ export const getWallpaper = async (limit: number, page: number) => {
     imageLink: res["imageLink"],
     collection: res["collection"],
   }
-  
+  const wallpaper_path= "wallpapers/"+painting["collection"]+"/wallpaper-"+painting["id"]+".jpg"
+  const already_has_wallpaper = await fs.exists(wallpaper_path, { dir: BaseDirectory.AppData })
+  if(already_has_wallpaper){
+    console.log("already downloaded this wallpaper ! ")
+    return painting
+  }
+
+  console.log("first time downloading this wallpaper")
   const client = await getClient();
   const data = (
     await client.get(painting["imageLink"], {

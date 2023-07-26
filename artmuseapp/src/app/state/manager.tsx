@@ -4,7 +4,8 @@ import { couldStartTrivia } from "typescript";
 import { Wallpaper } from "../types";
 import { getWallpaper } from "./api";
 import { invoke } from '@tauri-apps/api/tauri'
-import { appDataDir } from '@tauri-apps/api/path';
+import { BaseDirectory, appDataDir } from '@tauri-apps/api/path';
+import { fs } from "@tauri-apps/api";
 
 
 
