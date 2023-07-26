@@ -16,10 +16,8 @@ const openPage = (page) => {
 }
 const Loadera = () => {
   return (
-    <div className="bg-blue-500 h-[100vh] w-[100vw] flex items-center justify-center text-center flex-col">
-      <h1 className="text-white mb-4 text-5xl ">Welcome!</h1>
-      <h1 className="text-white mb-4 text-2xl ">One Moment Please...</h1>
-    </div>
+    <span className="loading loading-spinner loading-lg"></span>
+
   );
 };
 

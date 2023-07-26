@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html data-theme="pastel" style={{backgroundColor:"transparent"}} lang="en">
       <body className={`${jost.className} arrow`} >{children}</body>
     </html>
   )
