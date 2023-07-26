@@ -1,15 +1,31 @@
 import { StarIcon } from '@heroicons/react/24/outline'
+import { FunctionComponent } from 'react'
 
-export default function PaintingDetails() {
+interface PaintingDetailsProps{
+    artistDisplayName:string;
+    objectEndDate:string;
+    objectBeginDate:string;
+    title:string;
+    collection:string;
+} 
+
+const PaintingDetails: FunctionComponent<PaintingDetailsProps> = ({ artistDisplayName,
+    objectEndDate,
+    objectBeginDate,
+
+    title,
+    collection }) => {
     return <div>
         <h1>
-        Mountain Scene
+            {title}
         </h1>
         <h4>
-        Albert Bierstadt
+            {artistDisplayName}
         </h4>
         <h4>
-        1880 - 1890
+            {objectBeginDate + "-"+ objectEndDate}
         </h4>
     </div>
 }
+
+export default PaintingDetails

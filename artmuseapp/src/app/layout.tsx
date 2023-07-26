@@ -2,7 +2,6 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter , Jost } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
 const jost= Jost({subsets:["cyrillic"]})
 export const metadata: Metadata = {
   title: 'Art Muse',

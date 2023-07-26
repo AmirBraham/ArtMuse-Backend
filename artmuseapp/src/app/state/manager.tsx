@@ -10,7 +10,6 @@ const store = new Store(".settings.dat");
 export const init = async () => {
   const has_been_initialized: boolean | null = await store.get("has_been_initialized")
   console.log("has been initialized : " + has_been_initialized)
-  const wallpaper = await get_current_wallpaper()
   if (has_been_initialized) {
     console.log("already initialized")
     return true
