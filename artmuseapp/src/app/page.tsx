@@ -7,7 +7,7 @@ import Favorite from './Favorite'
 import PaintingDetails from './PaintingDetails'
 import { ArrowRightIcon, ArrowLeftIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react';
-import { get_current_wallpaper, get_limit, get_page, init, set_current_wallpaper, set_page } from './state/manager';
+import { add_favorite, get_current_wallpaper, get_favorites, get_limit, get_page, init, remove_favorite, set_current_wallpaper, set_page } from './state/manager';
 import { getWallpaper } from './state/api';
 import { Wallpaper } from './types';
 import { open } from '@tauri-apps/api/shell';
@@ -27,9 +27,10 @@ export default function Home() {
     load: true,
     loadedOnce: false,
   });
+  const [isFavorite, setIsFavorite] = useState(false)
   const [currentWallpaper, setCurrentWallpaper] = useState({})
+
   useEffect(() => {
-    console.log("loading only once")
     if (loading["load"] == true && loading["loadedOnce"] == false) {
       console.log("calling init")
       init()
@@ -44,6 +45,33 @@ export default function Home() {
     })
   }, [])
 
+  useEffect(() => {
+    check_favorite(currentWallpaper["id"]).then(res=>{
+      console.log("is in fav : " + res)
+      setIsFavorite(res)
+    })
+  }, [currentWallpaper])
+
+  const check_favorite = async (id) => {
+    const favorites = await get_favorites()
+    console.log(favorites)
+    const res = favorites.find(painting => painting["id"] == id)
+    if (res)
+      return true
+    return false
+  }
+  const addToFavorite = async () => {
+    const res = await add_favorite(currentWallpaper)
+    console.log(res)
+    setIsFavorite(true)
+  }
+
+  const removeFromFavorite = async () => {
+    const res = await remove_favorite(currentWallpaper["id"])
+    console.log(res)
+    setIsFavorite(false)
+  }
+
 
 
   const nextWallpaper = async () => {
@@ -54,6 +82,7 @@ export default function Home() {
     const wallpaper: Wallpaper = await getWallpaper(limit, page)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
+
   }
   const previousWallpaper = async () => {
     const prev_page = await get_page()
@@ -64,8 +93,9 @@ export default function Home() {
     const wallpaper: Wallpaper = await getWallpaper(limit, page)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
+
   }
-  console.log(currentWallpaper)
+
   return (
     <>
       {
@@ -78,7 +108,9 @@ export default function Home() {
                 <div className="basis-3/4 pt-1 flex space-x-2" >
                   <div className="flex-none h-5 w-5" >
                     <button>
-                      <Favorite />
+                      <Favorite addToFavorite={addToFavorite}
+                        removeFromFavorite={removeFromFavorite}
+                        isFavorite={isFavorite} />
                     </button>
                   </div>
                   <div className="flex-none h-5 w-5" >
@@ -102,7 +134,7 @@ export default function Home() {
                 <div className="basis-1/12 grid place-items-center ">
                   <div className="flex-none h-5 w-5">
                     <a onClick={() => openPage(currentWallpaper["resourceLink"])}>
-                    <ArrowTopRightOnSquareIcon  />
+                      <ArrowTopRightOnSquareIcon />
                     </a>
 
                   </div>

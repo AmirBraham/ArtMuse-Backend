@@ -15,19 +15,18 @@ export default function Settings() {
                 <p className="text-black text-xl text-center ">Settings</p>
             </div>
         </div>
-        <div className="flex flex-col basis-3/4">
-            <div>
+        <div className="flex flex-col basis-3/4 px-4">
 
             <label className="label cursor-pointer">
                 Start on Startup
                 <input type="checkbox" className="toggle" />
             </label>
-            </div>
-            <div>
+            <label className="label cursor-pointer">
+                Take only from favorites
+                <input type="checkbox" className="toggle" />
+            </label>
 
-            <button title="change interval" onClick={() => set_interval(5)}>Change Interval</button>
-
-            </div>
+            
 
         </div>
 

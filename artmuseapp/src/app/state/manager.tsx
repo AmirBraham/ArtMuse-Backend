@@ -43,25 +43,36 @@ export const get_interval = async () => {
 
 export const get_favorites = async () => {
   const favorites = await store.get("favorites")
-  if (favorites)
-    alert(favorites)
   return favorites
 }
 
 export const add_favorite = async (favorite: Wallpaper) => {
   const pred_favorites: Wallpaper[] | null = await store.get("favorites")
-  if (pred_favorites != null)
+  if (pred_favorites != null){
     await store.set("favorites", [...pred_favorites, favorite])
-  await store.set("favorites", [favorite])
-  await store.save();
+    await store.save()
+  } else {
+    await store.set("favorites", [favorite])
+    await store.save();
+  }
+  return true
 }
-
+export const remove_favorite = async (id:string) => {
+  const favorites:Wallpaper[] | null = await store.get("favorites")
+  if(favorites == null){
+    console.log("favorites is null")
+    return false
+  }
+  const filterd_favorites = favorites.filter(wallpaper => wallpaper["id"] != id)
+  await store.set("favorites",filterd_favorites)
+  await store.save()
+  return filterd_favorites
+}
 export const get_current_wallpaper = async () => {
   const currect_wallpaper: Wallpaper | null = await store.get("current_wallpaper")
   if (currect_wallpaper != null && Object.keys(currect_wallpaper).length !== 0)
     return currect_wallpaper
   const painting: Wallpaper = await getWallpaper(1, 1)
-
   await set_current_wallpaper(painting)
   return {}
   // if we reached this point , this is the first time the user has opened our app , we will need to fetch a random wallpaper and set other params
