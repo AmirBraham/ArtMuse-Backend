@@ -1,12 +1,21 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use tauri::{Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,CustomMenuItem};
+use tauri::{Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,CustomMenuItem, api::path::{app_data_dir, data_dir, local_data_dir}};
 use tauri_plugin_positioner::{Position, WindowExt};
 use wallpaper;
 
 #[tauri::command]
-fn greet() -> String {
-   println!("greet , leaving this for future use ");
+fn change_wallpaper(id:String,collection:String,appData:String) -> String {
+    let final_id = id.to_string();
+    let final_collection = collection.to_string();
+    let appdata_path = appData.to_string();
+    let final_path = format!("{}wallpapers/{}/wallpaper-{}.jpg", appData, final_collection,final_id);								
+    println!("{}", final_path);
+    println!("{:?}", wallpaper::get());
+    // Sets the wallpaper for the current desktop from a URL.
+    wallpaper::set_from_path(&final_path).unwrap();
+    // Returns the wallpaper of the current desktop.
+    println!("{:?}", wallpaper::get());
    format!("state returned")
 }
 
@@ -35,7 +44,6 @@ fn main() {
                     window.open_devtools();
                     // use TrayCenter as initial window position
                     let _ = window.move_window(Position::TrayCenter);
-                    //wallpaper::set_from_path("/Users/amirbraham/Desktop/ArtMuse/artmuseapp/src-tauri/src/wallpaper.jpg").unwrap();
                     if window.is_visible().unwrap() {
                         window.hide().unwrap();
                     } else {
@@ -55,7 +63,7 @@ fn main() {
           }
           _ => {}
       })
-      .invoke_handler(tauri::generate_handler![greet])
+      .invoke_handler(tauri::generate_handler![change_wallpaper])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

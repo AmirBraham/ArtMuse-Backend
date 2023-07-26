@@ -3,6 +3,11 @@ import { DEFAULT_INTERVAL_VALUE } from "./init";
 import { couldStartTrivia } from "typescript";
 import { Wallpaper } from "../types";
 import { getWallpaper } from "./api";
+import { invoke } from '@tauri-apps/api/tauri'
+import { appDataDir } from '@tauri-apps/api/path';
+
+
+
 const store = new Store(".settings.dat");
 
 
@@ -81,10 +86,13 @@ export const get_current_wallpaper = async () => {
 export const set_current_wallpaper = async (wallpaper: Wallpaper) => {
   await store.set("current_wallpaper", wallpaper)
   await store.save()
+  const appDataDirPath = await appDataDir();
+
+  invoke('change_wallpaper', {id: wallpaper["id"],collection:wallpaper["collection"],appData: appDataDirPath}).catch(err=>{
+    console.log(err)
+  })
   return wallpaper
 }
-
-
 
 export const get_take_only_from_favorites = async () => {
   const take_only_from_favorites = await store.get("take_only_from_favorites")

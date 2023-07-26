@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image'
-import ChangeWallpaper from './ChangeWallpaper'
+import Settings from './Settings'
 import Logo from './Logo'
 import Favorite from './Favorite'
 import PaintingDetails from './PaintingDetails'
@@ -11,16 +11,17 @@ import { add_favorite, get_current_wallpaper, get_favorites, get_limit, get_page
 import { getWallpaper } from './state/api';
 import { Wallpaper } from './types';
 import { open } from '@tauri-apps/api/shell';
+import { readBinaryFile, BaseDirectory } from '@tauri-apps/api/fs';
+
+// add image_preview to wallpaper fields , need to generate preview on backend (preprocessing) 
 const openPage = (page) => {
   open(page)
 }
 const Loadera = () => {
   return (
     <span className="loading loading-spinner loading-lg"></span>
-
   );
 };
-
 
 export default function Home() {
   const [loading, setLoading] = useState({
@@ -46,7 +47,7 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    check_favorite(currentWallpaper["id"]).then(res=>{
+    check_favorite(currentWallpaper["id"]).then(res => {
       console.log("is in fav : " + res)
       setIsFavorite(res)
     })
@@ -95,7 +96,6 @@ export default function Home() {
     setCurrentWallpaper(wallpaper)
 
   }
-
   return (
     <>
       {
@@ -114,7 +114,7 @@ export default function Home() {
                     </button>
                   </div>
                   <div className="flex-none h-5 w-5" >
-                    <ChangeWallpaper />
+                    <Settings />
                   </div>
                   <div className="flex-none h-5 w-5" >
                     <ArrowLeftIcon onClick={previousWallpaper} />

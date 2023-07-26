@@ -1,29 +1,66 @@
-import { API_BASE_URL } from "./init"; 
+import { API_BASE_URL } from "./init";
 import { Wallpaper } from "../types";
-export const getWallpaper = async (limit:number,page:number) => {
+import * as fs from "@tauri-apps/api/fs";
+import { getClient, ResponseType } from "@tauri-apps/api/http";
+import { BaseDirectory, resourceDir } from '@tauri-apps/api/path';
+export const getWallpaper = async (limit: number, page: number) => {
   // majors changes needed here : 
   // fetch images offline , if they don't exist use API to download 10 images
-    if(page<1)
-        page =1
-    const response = await fetch(API_BASE_URL+ `paintings/?limit=${limit}&page=${page}`, {
-        headers: {
-          'accept': 'application/json'
-        }
-      });
-    let res = await response.json()
-    console.log(res)
-    res = res["paintings"][0]
-    const painting:Wallpaper = {
-        id:res["id"],
-        resourceLink:res["resourceLink"],
-        objectBeginDate:res["objectBeginDate"],
-        objectEndDate:res["objectEndDate"],
-        artistDisplayName:res["artistDisplayName"],
-        title:res["title"],
-        imageLink:res["imageLink"],
-        collection:res["collection"],
+  if (page < 1)
+    page = 1
+  const response = await fetch(API_BASE_URL + `paintings/?limit=${limit}&page=${page}`, {
+    headers: {
+      'accept': 'application/json'
     }
-    return painting
+  });
+  let res = await response.json()
+  console.log(res)
+  res = res["paintings"][0]
+
+  const painting: Wallpaper = {
+    id: res["id"],
+    resourceLink: res["resourceLink"],
+    objectBeginDate: res["objectBeginDate"],
+    objectEndDate: res["objectEndDate"],
+    artistDisplayName: res["artistDisplayName"],
+    title: res["title"],
+    imageLink: res["imageLink"],
+    collection: res["collection"],
+  }
+  
+  const client = await getClient();
+  const data = (
+    await client.get(painting["imageLink"], {
+      responseType: ResponseType.Binary,
+    })
+  ).data as any;
+  const wallpapers_folder_exists = await fs.exists("wallpapers", { dir: BaseDirectory.AppData })
+  if(!wallpapers_folder_exists) {
+    console.log("wallpapers folder does not exists ,creating it")
+    await fs.createDir("wallpapers", {
+      dir: BaseDirectory.AppData,
+      recursive: true,
+    });
+  }
+  const collection_folder_exists = await fs.exists("wallpapers/"+painting["collection"],{ dir: BaseDirectory.AppData })
+  if(!collection_folder_exists) {
+    console.log("wallpapers/"+painting["collection"]+" folder does not exists ,creating it")
+    await fs.createDir("wallpapers/"+painting["collection"], {
+      dir: BaseDirectory.AppData,
+      recursive: true,
+    });
+  }
+  const download_path = "wallpapers/" + painting["collection"] + "/wallpaper-" + painting["id"] + ".jpg"
+  console.log(download_path)
+  await fs.writeBinaryFile(download_path,
+    data, {
+      dir: BaseDirectory.AppData
+    })
+  
+
+  return painting
 }
+
+
 
 
