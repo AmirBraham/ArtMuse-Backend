@@ -103,7 +103,7 @@ export default function Home() {
         loading.load && !loading.loadedOnce ? (
           <Loadera />
         ) : (
-          <main style={{ backgroundImage: "url(" + currentWallpaper["imageLink"] + ")", backgroundSize: "cover", backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} className="flex min-h-screen flex-col items-center justify-between container ">
+          <main style={{ backgroundImage: "url(" + currentWallpaper["imageLink"] + ")", backgroundSize: "cover", backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} className="flex min-h-screen flex-col items-center justify-between container">
             {
               loading.load && loading.loadedOnce ? (
                 <div className='fixed bg-black/50 w-screen grid h-screen place-items-center gap-4'>

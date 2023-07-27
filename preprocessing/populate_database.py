@@ -10,7 +10,7 @@ headers = {
     'Content-Type': 'application/json',
 }
 
-DEV= False
+DEV= True
 
 if(DEV):
     API_URL = "http://127.0.0.1:8000/api/"
@@ -32,6 +32,7 @@ def populate_db_metmuseum():
         'Link Resource':'resourceLink',
         'Collection':'collection'
     }
+    df = df.sample(frac=1) #shuffling rows to avoid getting same artist ten times in a row
     df.rename(columns=rename_columns,inplace=True)
     paintings =df.to_dict('records')
     with open("a.txt","w") as f:
@@ -39,5 +40,6 @@ def populate_db_metmuseum():
     response = requests.post(API_URL+'paintings/paintings', headers=headers, json=paintings)
     
     print(response)
+
 
 populate_db_metmuseum()

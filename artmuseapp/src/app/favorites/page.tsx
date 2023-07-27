@@ -8,9 +8,9 @@ import PaintingRow from "./PaintingRow";
 export default function Favorites() {
     const [favorites, setFavorites] = useState([])
     useEffect(() => {
-        get_favorites().then(res => setFavorites(res))
+        get_favorites().then(res => { console.log(res); setFavorites(res) })
     }, [])
-    return <main className="flex flex-col min-h-screen  bg-neutral-100 ">
+    return <main className="flex flex-col h-screen  bg-neutral-100 	">
         <div className="flex flex-row basis-1/4  bg-neutral-300 w-screen  p-3 place-content-start">
             <div className="basis-1/12 ">
                 <Link href="/settings">
@@ -24,26 +24,11 @@ export default function Favorites() {
 
             </div>
         </div>
-        <div className="overflow-x-auto ">
-            <table className="table-xs">
-                {/* head */}
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Painting</th>
-                        <th>Artist</th>
-                        <th>Details</th>
-                        <th></th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        favorites.map((painting,index) => <PaintingRow key={painting["id"]} painting={painting} index={index}/> )
-                    }
-                </tbody>
-            </table>
-        </div>
+        <ul className="max-h-screen overflow-y-auto p-4">
+                {
+                    favorites.map((painting, index) =><li key={painting["id"]} > <PaintingRow  painting={painting} index={index} /></li>)
+                }
+        </ul>
 
     </main>
 }

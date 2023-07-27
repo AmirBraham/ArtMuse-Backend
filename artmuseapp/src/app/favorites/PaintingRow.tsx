@@ -3,33 +3,39 @@ import { openPage } from "../page"
 import { Wallpaper } from "../types"
 
 
-const PaintingRow = ({painting,index}) => {
-    return <tr className={index%2 == 0 ?  "bg-neutral-200" : ""}>
-       <td></td>
-        <td>
-            <div className="flex items-center space-x-3">
-                <div className="avatar">
-                    <div className="mask  w-12 h-12">
-                        <img src={painting["imageLink"]}  />
-                    </div>
-                </div>
-                <div>
-                    <div className="font-bold">{painting["title"]}</div>
+const PaintingRow = ({ painting, index }) => {
+    return <div className={index % 2 == 0 ? "bg-neutral-200" : ""}>
+        <div className="flex flex-row items-center space-x-3 w-screen mb-1">
+            <div className="avatar basis-1/4">
+                <div className="mask  w-32 h-18">
+                    <img src={painting["imageLink"]} />
                 </div>
             </div>
-        </td>
-        <td>
-            {painting["artistDisplayName"]}
-        </td>
-        <td>
-            <a onClick={() => openPage(painting["resourceLink"])}>
-                <ArrowTopRightOnSquareIcon className="w-5 h-5" />
-            </a>
-        </td>
-        <td><p>
-            X
-            </p></td>
+            <div className="basis-3/4 flex flex-col">
+                <div className="text-sm">
+                    {painting["title"]}
+                </div>
+                <div >
+                    {painting["artistDisplayName"]}
+                </div>
+                <div className="flex flex-row mt-5 ">
+                    <div className="basis-1/2 ">
+                        <a className="btn btn-outline btn-xs" onClick={() => openPage(painting["resourceLink"])}>
+                            Details
+                        </a>
+                    </div>
+                    <div className="basis-1/2 ">
+                        <div className="ml-auto  btn btn-xs btn-outline">
+                            Unfavorite
+                        </div>
+                    </div>
+                </div>
 
-    </tr>
+
+            </div>
+        </div>
+
+    </div>
+
 }
 export default PaintingRow
