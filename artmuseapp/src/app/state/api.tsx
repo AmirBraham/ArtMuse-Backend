@@ -16,7 +16,6 @@ export const getWallpaper = async (limit: number, page: number) => {
   let res = await response.json()
   console.log(res)
   res = res["paintings"][0]
-
   const painting: Wallpaper = {
     id: res["id"],
     resourceLink: res["resourceLink"],
