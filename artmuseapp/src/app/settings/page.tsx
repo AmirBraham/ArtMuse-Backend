@@ -1,9 +1,25 @@
 'use client';
 import { ArrowLeftIcon, StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { set_interval } from "../state/manager";
-
+import { set_interval, toggle_start_on_startup, toggle_take_only_from_favorites,get_start_on_startup,get_take_only_from_favorites } from "../state/manager";
+import { useEffect, useState } from "react";
 export default function Settings() {
+    const [takeOnlyFromFavorites,setTakeOnlyFromFavorites] = useState(false)
+    const [startOnStartup,setStartOnStartup] = useState(false)
+    useEffect(() => {
+        get_start_on_startup().then(res=>{
+            setStartOnStartup(res)
+        })
+        get_take_only_from_favorites().then(res=>setTakeOnlyFromFavorites(res))
+    },[])
+    const toggleStartOnStartup = async () => {
+        await toggle_start_on_startup()
+        setStartOnStartup(!startOnStartup)
+    }
+    const toggleTakeFromFavorites = async () => {
+        await toggle_take_only_from_favorites()
+        setTakeOnlyFromFavorites(!takeOnlyFromFavorites)
+    }
     return <main className="flex flex-col min-h-screen  bg-neutral-100 ">
         <div className="flex flex-row basis-1/4  bg-neutral-300 w-screen  p-3 place-content-start">
             <div className="basis-1/12 ">
@@ -27,11 +43,11 @@ export default function Settings() {
 
             <label className="label cursor-pointer">
                 Start on Startup
-                <input type="checkbox" className="toggle" />
+                <input onChange={toggleStartOnStartup} type="checkbox" checked={startOnStartup} className="checkbox" />
             </label>
             <label className="label cursor-pointer">
                 Take only from favorites
-                <input type="checkbox" className="toggle" />
+                <input onChange={toggleTakeFromFavorites} type="checkbox" checked={takeOnlyFromFavorites} className="checkbox" />
             </label>
 
 

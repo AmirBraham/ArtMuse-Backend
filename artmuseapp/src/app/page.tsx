@@ -94,8 +94,6 @@ export default function Home() {
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
     setLoading({load:false,loadedOnce:true})
-
-
   }
   return (
     <>

@@ -19,6 +19,8 @@ export const init = async () => {
   await set_interval(DEFAULT_INTERVAL_VALUE)
   await set_limit(1)
   await set_page(1)
+  await store.set("take_only_from_favorites", false)
+  await store.set("start_on_startup", false)
   await store.set("favorites", [])
   await store.set("has_been_initialized", true);
   const painting: Wallpaper = await getWallpaper(1, 1)
