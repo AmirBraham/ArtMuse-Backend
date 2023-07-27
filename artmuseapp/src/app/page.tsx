@@ -33,7 +33,6 @@ export default function Home() {
 
   useEffect(() => {
     if (loading["load"] == true && loading["loadedOnce"] == false) {
-      console.log("calling init")
       init()
     }
     setLoading({ load: false, loadedOnce: true })
@@ -48,14 +47,12 @@ export default function Home() {
 
   useEffect(() => {
     check_favorite(currentWallpaper["id"]).then(res => {
-      console.log("is in fav : " + res)
       setIsFavorite(res)
     })
   }, [currentWallpaper])
 
   const check_favorite = async (id) => {
     const favorites = await get_favorites()
-    console.log(favorites)
     const res = favorites.find(painting => painting["id"] == id)
     if (res)
       return true
@@ -63,7 +60,6 @@ export default function Home() {
   }
   const addToFavorite = async () => {
     const res = await add_favorite(currentWallpaper)
-    console.log(res)
     setIsFavorite(true)
   }
 
@@ -76,6 +72,7 @@ export default function Home() {
 
 
   const nextWallpaper = async () => {
+    setLoading({load:true,loadedOnce:true})
     const prev_page = await get_page()
     await set_page(prev_page + 1)
     const page: number = await get_page()
@@ -83,9 +80,12 @@ export default function Home() {
     const wallpaper: Wallpaper = await getWallpaper(limit, page)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
+    setLoading({load:false,loadedOnce:true})
 
   }
   const previousWallpaper = async () => {
+    setLoading({load:true,loadedOnce:true})
+
     const prev_page = await get_page()
     await set_page(prev_page - 1)
     const page: number = await get_page()
@@ -94,6 +94,8 @@ export default function Home() {
     const wallpaper: Wallpaper = await getWallpaper(limit, page)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
+    setLoading({load:false,loadedOnce:true})
+
 
   }
   return (
@@ -103,6 +105,17 @@ export default function Home() {
           <Loadera />
         ) : (
           <main style={{ backgroundImage: "url(" + currentWallpaper["imageLink"] + ")", backgroundSize: "cover", backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} className="flex min-h-screen flex-col items-center justify-between container ">
+            {
+              loading.load && loading.loadedOnce ? (
+                <div className='fixed bg-black/50 w-screen grid h-screen place-items-center gap-4'>
+                <div className='pt-10'>
+                <Loadera />
+                </div>
+                <p className='pb-20'>Downloading your next favorite wallpaper</p>
+
+                </div>
+              ):null
+            }
             <div className='flex flex-col container mx-auto p-3 ' style={{ background: "rgba(0, 0, 0, 0.5)", height: 300 }} >
               <div className='flex flex-row basis-3/4 '>
                 <div className="basis-3/4 pt-1 flex space-x-2" >

@@ -1,11 +1,9 @@
 import { Store } from "tauri-plugin-store-api";
 import { DEFAULT_INTERVAL_VALUE } from "./init";
-import { couldStartTrivia } from "typescript";
 import { Wallpaper } from "../types";
 import { getWallpaper } from "./api";
 import { invoke } from '@tauri-apps/api/tauri'
-import { BaseDirectory, appDataDir } from '@tauri-apps/api/path';
-import { fs } from "@tauri-apps/api";
+import { appDataDir } from '@tauri-apps/api/path';
 
 
 
@@ -15,9 +13,7 @@ const store = new Store(".settings.dat");
 
 export const init = async () => {
   const has_been_initialized: boolean | null = await store.get("has_been_initialized")
-  console.log("has been initialized : " + has_been_initialized)
   if (has_been_initialized) {
-    console.log("already initialized")
     return true
   }
   await set_interval(DEFAULT_INTERVAL_VALUE)
@@ -89,7 +85,7 @@ export const set_current_wallpaper = async (wallpaper: Wallpaper) => {
   await store.save()
   const appDataDirPath = await appDataDir();
 
-  invoke('change_wallpaper', {id: wallpaper["id"],collection:wallpaper["collection"],appData: appDataDirPath}).catch(err=>{
+  invoke('change_wallpaper', {id: wallpaper["id"],collection:wallpaper["collection"],appdata: appDataDirPath}).catch(err=>{
     console.log(err)
   })
   return wallpaper
@@ -134,7 +130,6 @@ export const set_page = async (value: number) => {
 
   await store.set("page", final_value)
   await store.save()
-  console.log(final_value)
   return final_value
 }
 

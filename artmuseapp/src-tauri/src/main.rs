@@ -5,17 +5,12 @@ use tauri_plugin_positioner::{Position, WindowExt};
 use wallpaper;
 
 #[tauri::command]
-fn change_wallpaper(id:String,collection:String,appData:String) -> String {
-    let final_id = id.to_string();
-    let final_collection = collection.to_string();
-    let appdata_path = appData.to_string();
-    let final_path = format!("{}wallpapers/{}/wallpaper-{}.jpg", appData, final_collection,final_id);								
+fn change_wallpaper(id:String,collection:String,appdata:String) -> String {
+    let final_path = format!("{}wallpapers/{}/wallpaper-{}.jpg", appdata, collection,id);								
     println!("{}", final_path);
-    println!("{:?}", wallpaper::get());
     // Sets the wallpaper for the current desktop from a URL.
     wallpaper::set_from_path(&final_path).unwrap();
     // Returns the wallpaper of the current desktop.
-    println!("{:?}", wallpaper::get());
    format!("state returned")
 }
 

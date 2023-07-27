@@ -14,7 +14,6 @@ export const getWallpaper = async (limit: number, page: number) => {
     }
   });
   let res = await response.json()
-  console.log(res)
   res = res["paintings"][0]
   const painting: Wallpaper = {
     id: res["id"],
@@ -29,11 +28,10 @@ export const getWallpaper = async (limit: number, page: number) => {
   const wallpaper_path= "wallpapers/"+painting["collection"]+"/wallpaper-"+painting["id"]+".jpg"
   const already_has_wallpaper = await fs.exists(wallpaper_path, { dir: BaseDirectory.AppData })
   if(already_has_wallpaper){
-    console.log("already downloaded this wallpaper ! ")
     return painting
   }
 
-  console.log("first time downloading this wallpaper")
+  // first time downloading this wallpaper
   const client = await getClient();
   const data = (
     await client.get(painting["imageLink"], {
@@ -42,7 +40,6 @@ export const getWallpaper = async (limit: number, page: number) => {
   ).data as any;
   const wallpapers_folder_exists = await fs.exists("wallpapers", { dir: BaseDirectory.AppData })
   if(!wallpapers_folder_exists) {
-    console.log("wallpapers folder does not exists ,creating it")
     await fs.createDir("wallpapers", {
       dir: BaseDirectory.AppData,
       recursive: true,
@@ -50,14 +47,12 @@ export const getWallpaper = async (limit: number, page: number) => {
   }
   const collection_folder_exists = await fs.exists("wallpapers/"+painting["collection"],{ dir: BaseDirectory.AppData })
   if(!collection_folder_exists) {
-    console.log("wallpapers/"+painting["collection"]+" folder does not exists ,creating it")
     await fs.createDir("wallpapers/"+painting["collection"], {
       dir: BaseDirectory.AppData,
       recursive: true,
     });
   }
   const download_path = "wallpapers/" + painting["collection"] + "/wallpaper-" + painting["id"] + ".jpg"
-  console.log(download_path)
   await fs.writeBinaryFile(download_path,
     data, {
       dir: BaseDirectory.AppData
