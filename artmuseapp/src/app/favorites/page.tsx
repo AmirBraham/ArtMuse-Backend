@@ -2,10 +2,15 @@
 import { ArrowLeftIcon, StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { get_favorites } from "../state/manager";
+import { get_favorites, remove_favorite } from "../state/manager";
 import PaintingRow from "./PaintingRow";
 
 export default function Favorites() {
+    const unfavorite = (id) => {
+        remove_favorite(id)
+        const filtered_favorites =favorites.filter(painting => painting["id"] != id)
+        setFavorites(filtered_favorites)
+    }
     const [favorites, setFavorites] = useState([])
     useEffect(() => {
         get_favorites().then(res => { console.log(res); setFavorites(res) })
@@ -26,7 +31,7 @@ export default function Favorites() {
         </div>
         <ul className="max-h-screen overflow-y-auto p-4">
                 {
-                    favorites.map((painting, index) =><li key={painting["id"]} > <PaintingRow  painting={painting} index={index} /></li>)
+                    favorites.map((painting, index) =><li key={painting["id"]} > <PaintingRow unfavorite={unfavorite}  painting={painting} index={index} /></li>)
                 }
         </ul>
 

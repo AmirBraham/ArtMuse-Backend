@@ -2,8 +2,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
 import { openPage } from "../page"
 import { Wallpaper } from "../types"
 
-
-const PaintingRow = ({ painting, index }) => {
+const PaintingRow = ({ painting, index,unfavorite }) => {
     return <div className={index % 2 == 0 ? "bg-neutral-200" : ""}>
         <div className="flex flex-row items-center space-x-3 w-screen mb-1">
             <div className="avatar basis-1/4">
@@ -25,7 +24,7 @@ const PaintingRow = ({ painting, index }) => {
                         </a>
                     </div>
                     <div className="basis-1/2 ">
-                        <div className="ml-auto  btn btn-xs btn-outline">
+                        <div className="ml-auto  btn btn-xs btn-outline" onClick={() => unfavorite(painting["id"])}>
                             Unfavorite
                         </div>
                     </div>
