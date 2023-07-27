@@ -1,5 +1,5 @@
 'use client';
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { set_interval } from "../state/manager";
 
@@ -11,8 +11,16 @@ export default function Settings() {
                     <ArrowLeftIcon className="h-5 pt-1 " />
                 </Link>
             </div>
-            <div className="basis-10/12  h-6">
-                <p className="text-black text-xl text-center ">Settings</p>
+            <div className="basis-11/12 h-6  flex flex-row">
+                <div className="text-black text-xl text-center basis-11/12">
+                    <p>Settings</p>
+                </div>
+                <div className="basis-1/12 flex flex-col">
+                    <Link href="/favorites">
+                        <StarIcon className="flex-1 text-yellow-500"></StarIcon>
+                    </Link>
+
+                </div>
             </div>
         </div>
         <div className="flex flex-col basis-3/4 px-4">
@@ -26,7 +34,7 @@ export default function Settings() {
                 <input type="checkbox" className="toggle" />
             </label>
 
-            
+
 
         </div>
 

@@ -11,10 +11,9 @@ import { add_favorite, get_current_wallpaper, get_favorites, get_limit, get_page
 import { getWallpaper } from './state/api';
 import { Wallpaper } from './types';
 import { open } from '@tauri-apps/api/shell';
-import { readBinaryFile, BaseDirectory } from '@tauri-apps/api/fs';
 
 // add image_preview to wallpaper fields , need to generate preview on backend (preprocessing) 
-const openPage = (page) => {
+export const openPage = (page) => {
   open(page)
 }
 const Loadera = () => {
