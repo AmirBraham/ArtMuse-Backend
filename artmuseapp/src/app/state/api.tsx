@@ -3,12 +3,12 @@ import { Wallpaper } from "../types";
 import * as fs from "@tauri-apps/api/fs";
 import { getClient, ResponseType } from "@tauri-apps/api/http";
 import { BaseDirectory, resourceDir } from '@tauri-apps/api/path';
-export const getWallpaper = async (limit: number, page: number) => {
+export const getWallpaper = async (limit: number, page: number,collection:string) => {
   // majors changes needed here : 
   // fetch images offline , if they don't exist use API to download 10 images
   if (page < 1)
     page = 1
-  const response = await fetch(API_BASE_URL + `paintings/?limit=${limit}&page=${page}`, {
+  const response = await fetch(API_BASE_URL + `paintings/?limit=${limit}&page=${page}&collection=${collection}`, {
     headers: {
       'accept': 'application/json'
     }

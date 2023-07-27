@@ -30,7 +30,7 @@ export default function Home() {
   });
   const [isFavorite, setIsFavorite] = useState(false)
   const [currentWallpaper, setCurrentWallpaper] = useState({})
-
+  const [collection,setCollection] = useState("The Metropolitan Museum of Art")
   useEffect(() => {
     if (loading["load"] == true && loading["loadedOnce"] == false) {
       init()
@@ -77,7 +77,7 @@ export default function Home() {
     await set_page(prev_page + 1)
     const page: number = await get_page()
     const limit: number = await get_limit()
-    const wallpaper: Wallpaper = await getWallpaper(limit, page)
+    const wallpaper: Wallpaper = await getWallpaper(limit, page,collection)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
     setLoading({load:false,loadedOnce:true})
@@ -91,7 +91,7 @@ export default function Home() {
     const page: number = await get_page()
     const limit: number = await get_limit()
     console.log(page)
-    const wallpaper: Wallpaper = await getWallpaper(limit, page)
+    const wallpaper: Wallpaper = await getWallpaper(limit, page,collection)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
     setLoading({load:false,loadedOnce:true})

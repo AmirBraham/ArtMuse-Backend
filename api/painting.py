@@ -6,11 +6,12 @@ from database import get_db
 router = APIRouter()
 
 @router.get('/')
-def get_paintings(db: Session = Depends(get_db), limit: int = 10, page: int = 1, search: str = ''):
+def get_paintings(db: Session = Depends(get_db), limit: int = 10, page: int = 1, search: str = '',collection:str=''):
     print("hello")
     skip = (page - 1) * limit
-
     paintings = db.query(models.Painting).filter(
+        models.Painting.collection == collection
+    ).filter(
         models.Painting.title.contains(search)).limit(limit).offset(skip).all()
     return {'status': 'success', 'results': len(paintings), 'paintings': paintings}
 
