@@ -5,10 +5,10 @@ import Settings from './Settings'
 import Logo from './Logo'
 import Favorite from './Favorite'
 import PaintingDetails from './PaintingDetails'
-import { ArrowRightIcon, ArrowLeftIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
+import { ArrowRightIcon, ArrowLeftIcon, ArrowTopRightOnSquareIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react';
-import { add_favorite, get_current_wallpaper, get_favorites, get_limit, get_page, init, remove_favorite, set_current_wallpaper, set_page } from './state/manager';
-import { getWallpaper } from './state/api';
+import { add_favorite, get_current_wallpaper, get_favorites, get_limit, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_page } from './state/manager';
+import { getWallpaper, getWallpaperFromFavorite } from './state/api';
 import { Wallpaper } from './types';
 import { open } from '@tauri-apps/api/shell';
 
@@ -29,7 +29,12 @@ export default function Home() {
   });
   const [isFavorite, setIsFavorite] = useState(false)
   const [currentWallpaper, setCurrentWallpaper] = useState({})
-  const [collection,setCollection] = useState("The Metropolitan Museum of Art")
+  const [collection, setCollection] = useState("The Metropolitan Museum of Art")
+  const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
+
+  useEffect(() => {
+    get_take_only_from_favorites().then(res => setTakeOnlyFromFavorite(res))
+  }, [])
   useEffect(() => {
     if (loading["load"] == true && loading["loadedOnce"] == false) {
       init()
@@ -71,29 +76,39 @@ export default function Home() {
 
 
   const nextWallpaper = async () => {
-    setLoading({load:true,loadedOnce:true})
+    setLoading({ load: true, loadedOnce: true })
     const prev_page = await get_page()
     await set_page(prev_page + 1)
     const page: number = await get_page()
     const limit: number = await get_limit()
-    const wallpaper: Wallpaper = await getWallpaper(limit, page,collection)
+    const wallpaper: Wallpaper = await getWallpaper(limit, page, collection)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
-    setLoading({load:false,loadedOnce:true})
+    setLoading({ load: false, loadedOnce: true })
+  }
+
+  const setWallpaperFromFavorite = async () => {
+    setLoading({ load: true, loadedOnce: true })
+    const wallpaper: Wallpaper = await getWallpaperFromFavorite(currentWallpaper)
+    await set_current_wallpaper(wallpaper)
+
+    setCurrentWallpaper(wallpaper)
+    setLoading({ load: false, loadedOnce: true })
 
   }
+
   const previousWallpaper = async () => {
-    setLoading({load:true,loadedOnce:true})
+    setLoading({ load: true, loadedOnce: true })
 
     const prev_page = await get_page()
     await set_page(prev_page - 1)
     const page: number = await get_page()
     const limit: number = await get_limit()
     console.log(page)
-    const wallpaper: Wallpaper = await getWallpaper(limit, page,collection)
+    const wallpaper: Wallpaper = await getWallpaper(limit, page, collection)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
-    setLoading({load:false,loadedOnce:true})
+    setLoading({ load: false, loadedOnce: true })
   }
   return (
     <>
@@ -105,13 +120,13 @@ export default function Home() {
             {
               loading.load && loading.loadedOnce ? (
                 <div className='fixed bg-black/50 w-screen grid h-screen place-items-center gap-4'>
-                <div className='pt-10'>
-                <Loadera />
-                </div>
-                <p className='pb-20'>Downloading your next favorite wallpaper</p>
+                  <div className='pt-10'>
+                    <Loadera />
+                  </div>
+                  <p className='pb-20'>Downloading your next favorite wallpaper</p>
 
                 </div>
-              ):null
+              ) : null
             }
             <div className='flex flex-col container mx-auto p-3 ' style={{ background: "rgba(0, 0, 0, 0.5)", height: 300 }} >
               <div className='flex flex-row basis-3/4 '>
@@ -126,12 +141,16 @@ export default function Home() {
                   <div className="flex-none h-5 w-5" >
                     <Settings />
                   </div>
+                  {takeOnlyFromFavorite ? <div className="flex-none h-5 w-5" >
+                    <ArrowPathIcon onClick={setWallpaperFromFavorite} />
+                  </div> : (<>
                   <div className="flex-none h-5 w-5" >
                     <ArrowLeftIcon onClick={previousWallpaper} />
                   </div>
-                  <div className="flex-none h-5 w-5" >
-                    <ArrowRightIcon onClick={nextWallpaper} />
-                  </div>
+                    <div className="flex-none h-5 w-5" >
+                      <ArrowRightIcon onClick={nextWallpaper} />
+                    </div></>)}
+
                 </div>
                 <div className="basis-1/4 ">
                   <Logo />
