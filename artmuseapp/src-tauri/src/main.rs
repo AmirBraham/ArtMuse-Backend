@@ -1,25 +1,41 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use tauri::{Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,CustomMenuItem, api::path::{app_data_dir, data_dir, local_data_dir}};
+use clokwerk::{Job, Scheduler, TimeUnits};
+use tauri::{
+    api::path::{app_data_dir, data_dir, local_data_dir},
+    CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,
+};
+use tauri_plugin_autostart::MacosLauncher;
 use tauri_plugin_positioner::{Position, WindowExt};
 use wallpaper;
-use tauri_plugin_autostart::MacosLauncher;
-
+// Import week days and WeekDay
+use clokwerk::Interval::*;
+use std::thread;
+use std::time::Duration;
 #[tauri::command]
-fn change_wallpaper(id:String,collection:String,appdata:String) -> String {
-    let final_path = format!("{}wallpapers/{}/wallpaper-{}.jpg", appdata, collection,id);								
+fn change_wallpaper(id: String, collection: String, appdata: String) -> String {
+    let final_path = format!("{}wallpapers/{}/wallpaper-{}.jpg", appdata, collection, id);
     println!("{}", final_path);
     // Sets the wallpaper for the current desktop from a URL.
     wallpaper::set_from_path(&final_path).unwrap();
     // Returns the wallpaper of the current desktop.
-   format!("state returned")
+    format!("state returned")
 }
 
 fn main() {
+    let mut scheduler = Scheduler::new();
+    scheduler
+        .every(30.minutes)
+        .run(|| println!("Periodic task"));
+    let thread_handle = scheduler.watch_thread(Duration::from_millis(1500));
+
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
     let system_tray_menu = SystemTrayMenu::new().add_item(quit);
     tauri::Builder::default()
-        .plugin(tauri_plugin_autostart::init(MacosLauncher::LaunchAgent, Some(vec!["--flag1", "--flag2"])))
+        .plugin(tauri_plugin_autostart::init(
+            MacosLauncher::LaunchAgent,
+            Some(vec!["--flag1", "--flag2"]),
+        ))
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_positioner::init())
         .system_tray(SystemTray::new().with_menu(system_tray_menu))
@@ -52,15 +68,15 @@ fn main() {
             }
         })
         .on_window_event(|event| match event.event() {
-          tauri::WindowEvent::Focused(is_focused) => {
-              // detect click outside of the focused window and hide the app
-              if !is_focused {
-                  event.window().hide().unwrap();
-              }
-          }
-          _ => {}
-      })
-      .invoke_handler(tauri::generate_handler![change_wallpaper])
+            tauri::WindowEvent::Focused(is_focused) => {
+                // detect click outside of the focused window and hide the app
+                if !is_focused {
+                    event.window().hide().unwrap();
+                }
+            }
+            _ => {}
+        })
+        .invoke_handler(tauri::generate_handler![change_wallpaper])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

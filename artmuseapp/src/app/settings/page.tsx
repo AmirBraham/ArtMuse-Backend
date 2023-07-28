@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 export default function Settings() {
     const [takeOnlyFromFavorites,setTakeOnlyFromFavorites] = useState(false)
     const [startOnStartup,setStartOnStartup] = useState(false)
+    const [interval,setInterval] = useState({
+       autoChangeWallpaper:false
+    })
     useEffect(() => {
         get_start_on_startup().then(res=>{
             setStartOnStartup(res)
