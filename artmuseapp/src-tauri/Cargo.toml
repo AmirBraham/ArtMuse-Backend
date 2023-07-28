@@ -21,6 +21,7 @@ tauri = { version = "1.4.0", features = [ "api-all", "macos-private-api", "syste
 tauri-plugin-positioner = { version = "1.0.4", features = ["system-tray"] }
 wallpaper = { version = "3.2.0"}
 tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tauri-plugin-autostart = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 
 
 [features]

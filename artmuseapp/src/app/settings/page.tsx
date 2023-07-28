@@ -1,8 +1,9 @@
 'use client';
 import { ArrowLeftIcon, StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { set_interval, toggle_start_on_startup, toggle_take_only_from_favorites,get_start_on_startup,get_take_only_from_favorites } from "../state/manager";
+import { toggle_start_on_startup, toggle_take_only_from_favorites,get_start_on_startup,get_take_only_from_favorites } from "../state/manager";
 import { useEffect, useState } from "react";
+
 export default function Settings() {
     const [takeOnlyFromFavorites,setTakeOnlyFromFavorites] = useState(false)
     const [startOnStartup,setStartOnStartup] = useState(false)

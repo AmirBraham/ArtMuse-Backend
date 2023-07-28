@@ -3,6 +3,7 @@
 use tauri::{Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,CustomMenuItem, api::path::{app_data_dir, data_dir, local_data_dir}};
 use tauri_plugin_positioner::{Position, WindowExt};
 use wallpaper;
+use tauri_plugin_autostart::MacosLauncher;
 
 #[tauri::command]
 fn change_wallpaper(id:String,collection:String,appdata:String) -> String {
@@ -18,6 +19,7 @@ fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
     let system_tray_menu = SystemTrayMenu::new().add_item(quit);
     tauri::Builder::default()
+        .plugin(tauri_plugin_autostart::init(MacosLauncher::LaunchAgent, Some(vec!["--flag1", "--flag2"])))
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_positioner::init())
         .system_tray(SystemTray::new().with_menu(system_tray_menu))

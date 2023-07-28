@@ -4,6 +4,7 @@ import { Wallpaper } from "../types";
 import { getWallpaper } from "./api";
 import { invoke } from '@tauri-apps/api/tauri'
 import { appDataDir } from '@tauri-apps/api/path';
+import { enable, isEnabled, disable } from "tauri-plugin-autostart-api";
 
 
 
@@ -109,18 +110,18 @@ export const toggle_take_only_from_favorites = async () => {
   return !pred_take_only_from_favorites
 }
 export const get_start_on_startup = async () => {
-  const pred_on_startup = await store.get("start_on_startup")
-  if (pred_on_startup != null)
-    return pred_on_startup
-  await store.set("start_on_startup", false)
-  await store.save();
-  return false
+  const pred_on_startup = await isEnabled()
+  return pred_on_startup
 }
 export const toggle_start_on_startup = async () => {
-  const pred_start_on_startup = await store.get("start_on_startup")
-  await store.set("start_on_startup", !pred_start_on_startup)
-  await store.save();
-  return !pred_start_on_startup
+  const pred_start_on_startup = await isEnabled()
+  if(pred_start_on_startup){
+    await disable()
+  } else {
+    await enable()
+  }
+  const res = await isEnabled()
+  return res
 }
 
 export const set_page = async (value: number) => {
