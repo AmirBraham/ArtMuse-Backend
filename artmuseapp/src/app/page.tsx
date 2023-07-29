@@ -7,7 +7,7 @@ import Favorite from './Favorite'
 import PaintingDetails from './PaintingDetails'
 import { ArrowRightIcon, ArrowLeftIcon, ArrowTopRightOnSquareIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react';
-import { add_favorite, get_current_wallpaper, get_favorites, get_limit, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_page } from './state/manager';
+import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_limit, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_page } from './state/manager';
 import { getWallpaper, getWallpaperFromFavorite } from './state/api';
 import { Wallpaper } from './types';
 import { open } from '@tauri-apps/api/shell';
@@ -29,14 +29,19 @@ export default function Home() {
   });
   const [isFavorite, setIsFavorite] = useState(false)
   const [currentWallpaper, setCurrentWallpaper] = useState({})
-  const [collection, setCollection] = useState("The Metropolitan Museum of Art")
+  const [collection, setCollection] = useState("")
   const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
 
   useEffect(() => {
     get_take_only_from_favorites().then(res => setTakeOnlyFromFavorite(res))
   }, [])
+
+  useEffect(() => {
+    get_collection().then(res => setCollection(res))
+  },[])
   useEffect(() => {
     if (loading["load"] == true && loading["loadedOnce"] == false) {
+      console.log("innintiigb")
       init()
     }
     setLoading({ load: false, loadedOnce: true })
@@ -57,19 +62,21 @@ export default function Home() {
 
   const check_favorite = async (id) => {
     const favorites = await get_favorites()
+    if(favorites.length == 0 ){
+      return false
+    }
     const res = favorites.find(painting => painting["id"] == id)
     if (res)
       return true
     return false
   }
   const addToFavorite = async () => {
-    const res = await add_favorite(currentWallpaper)
+    await add_favorite(currentWallpaper)
     setIsFavorite(true)
   }
 
   const removeFromFavorite = async () => {
-    const res = await remove_favorite(currentWallpaper["id"])
-    console.log(res)
+    await remove_favorite(currentWallpaper["id"])
     setIsFavorite(false)
   }
 
@@ -81,6 +88,7 @@ export default function Home() {
     await set_page(prev_page + 1)
     const page: number = await get_page()
     const limit: number = await get_limit()
+    
     const wallpaper: Wallpaper = await getWallpaper(limit, page, collection)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)

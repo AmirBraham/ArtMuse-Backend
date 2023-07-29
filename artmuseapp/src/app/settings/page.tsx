@@ -1,7 +1,7 @@
 'use client';
 import { ArrowLeftIcon, StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { toggle_start_on_startup, toggle_take_only_from_favorites,get_start_on_startup,get_take_only_from_favorites } from "../state/manager";
+import { toggle_start_on_startup, toggle_take_only_from_favorites,get_start_on_startup,get_take_only_from_favorites, clear_store } from "../state/manager";
 import { useEffect, useState } from "react";
 
 export default function Settings() {
@@ -39,7 +39,6 @@ export default function Settings() {
                     <Link href="/favorites">
                         <StarIcon className="flex-1 text-yellow-500"></StarIcon>
                     </Link>
-
                 </div>
             </div>
         </div>
@@ -53,6 +52,8 @@ export default function Settings() {
                 Take only from favorites
                 <input onChange={toggleTakeFromFavorites} type="checkbox" checked={takeOnlyFromFavorites} className="checkbox" />
             </label>
+
+            <button onClick={clear_store}>Clear Store</button>
 
 
 

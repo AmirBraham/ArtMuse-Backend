@@ -24,7 +24,10 @@ export const init = async () => {
   await store.set("start_on_startup", false)
   await store.set("favorites", [])
   await store.set("has_been_initialized", true);
-  const painting: Wallpaper = await getWallpaper(1, 1)
+  await store.set("collection","The Metropolitan Museum of Art")
+  console.log("init get wallpaper")
+  const painting: Wallpaper = await getWallpaper(1, 1,"The Metropolitan Museum of Art")
+  console.log("done")
   await set_current_wallpaper(painting)
   await store.save()
   return false
@@ -48,6 +51,11 @@ export const get_interval = async () => {
 
 export const get_favorites = async () => {
   const favorites = await store.get("favorites")
+  if(favorites == null) {
+    await store.set("favorites",[])
+    await store.save()
+    return []
+  }
   return favorites
 }
 
@@ -73,14 +81,33 @@ export const remove_favorite = async (id:string) => {
   await store.save()
   return filterd_favorites
 }
+export const get_collection = async () => {
+  const collection = await store.get("collection")
+  if(collection != null)
+    return collection
+  return "The Metropolitan Museum of Art"
+}
+
+export const set_collection = async (collection) => {
+  await store.set("collection",collection)
+  await store.save()
+}
 export const get_current_wallpaper = async () => {
   const currect_wallpaper: Wallpaper | null = await store.get("current_wallpaper")
   if (currect_wallpaper != null && Object.keys(currect_wallpaper).length !== 0)
     return currect_wallpaper
-  const painting: Wallpaper = await getWallpaper(1, 1)
+  const collection = await get_collection()
+  console.log("getting current wallpaper")
+  const painting: Wallpaper = await getWallpaper(1, 1,collection)
   await set_current_wallpaper(painting)
-  return {}
+  return painting
   // if we reached this point , this is the first time the user has opened our app , we will need to fetch a random wallpaper and set other params
+}
+
+export const clear_store = async () => {
+  await store.clear()
+  const res = await store.get("current_wallpaper")
+  console.log(res)
 }
 
 export const set_current_wallpaper = async (wallpaper: Wallpaper) => {

@@ -23,6 +23,7 @@ export const getWallpaper = async (limit: number, page: number, collection: stri
     }
   });
   let res = await response.json()
+  console.log(res)
   res = res["paintings"][0]
   const painting: Wallpaper = {
     id: res["id"],

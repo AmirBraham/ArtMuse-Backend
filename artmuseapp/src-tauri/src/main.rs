@@ -25,7 +25,7 @@ fn change_wallpaper(id: String, collection: String, appdata: String) -> String {
 fn main() {
     let mut scheduler = Scheduler::new();
     scheduler
-        .every(30.minutes)
+        .every(30.minutes())
         .run(|| println!("Periodic task"));
     let thread_handle = scheduler.watch_thread(Duration::from_millis(1500));
 
