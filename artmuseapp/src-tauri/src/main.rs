@@ -51,7 +51,7 @@ fn main() {
                     ..
                 } => {
                     let window = app.get_window("main").unwrap();
-                    window.open_devtools();
+                    //window.open_devtools();
                     // use TrayCenter as initial window position
                     let _ = window.move_window(Position::TrayCenter);
                     if window.is_visible().unwrap() {
