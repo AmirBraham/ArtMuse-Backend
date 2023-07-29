@@ -7,6 +7,7 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -16,6 +17,7 @@
 }
 
 body {
+  font-family: 'Jost Variable', sans-serif;
   margin: 0; 
   width: 400;
   height: 300;

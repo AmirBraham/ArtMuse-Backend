@@ -104,12 +104,10 @@ export default function Root() {
 
   const previousWallpaper = async () => {
     setLoading({ load: true, loadedOnce: true })
-
     const prev_page = await get_page()
     await set_page(prev_page - 1)
     const page = await get_page()
     const limit = await get_limit()
-    console.log(page)
     const wallpaper = await getWallpaper(limit, page, collection)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
@@ -121,7 +119,7 @@ export default function Root() {
         loading.load && !loading.loadedOnce ? (
           <Loadera />
         ) : (
-          <main style={{ backgroundImage: "url(" + currentWallpaper["imageLink"] + ")", backgroundSize: "cover", backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} className="flex min-h-screen flex-col items-center justify-between container">
+          <main style={{ backgroundImage: "url(" + currentWallpaper["imageLink"] + ")", backgroundSize: "cover", backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} className="flex min-h-screen flex-col items-center justify-between container rounded-md">
             {
               loading.load && loading.loadedOnce ? (
                 <div className='fixed bg-black/50 w-screen grid h-screen place-items-center gap-4'>

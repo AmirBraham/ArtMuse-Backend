@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import '@fontsource-variable/jost';
+
 import "./styles.css";
 import Root from "./routes/root";
 import Settings from "./routes/settings";
 import Favorites from "./routes/favorites";
 import ErrorPage from "./error-page";
+
 
 import {
   createBrowserRouter,
