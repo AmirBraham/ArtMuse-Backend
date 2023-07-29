@@ -12,6 +12,7 @@ use wallpaper;
 use clokwerk::Interval::*;
 use std::thread;
 use std::time::Duration;
+
 #[tauri::command]
 fn change_wallpaper(id: String, collection: String, appdata: String) -> String {
     let final_path = format!("{}wallpapers/{}/wallpaper-{}.jpg", appdata, collection, id);
@@ -22,13 +23,9 @@ fn change_wallpaper(id: String, collection: String, appdata: String) -> String {
     format!("state returned")
 }
 
-fn main() {
-    let mut scheduler = Scheduler::new();
-    scheduler
-        .every(30.minutes())
-        .run(|| println!("Periodic task"));
-    let thread_handle = scheduler.watch_thread(Duration::from_millis(1500));
 
+
+fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
     let system_tray_menu = SystemTrayMenu::new().add_item(quit);
     tauri::Builder::default()

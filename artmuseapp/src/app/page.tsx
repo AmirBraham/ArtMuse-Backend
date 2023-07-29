@@ -41,7 +41,6 @@ export default function Home() {
   },[])
   useEffect(() => {
     if (loading["load"] == true && loading["loadedOnce"] == false) {
-      console.log("innintiigb")
       init()
     }
     setLoading({ load: false, loadedOnce: true })
@@ -165,7 +164,7 @@ export default function Home() {
                 </div>
               </div>
               <div className='flex flex-row basis-1/4 pt-1'>
-                <div className="basis-11/12">
+                <div className="basis-11/12 pb-3">
                   <PaintingDetails artistDisplayName={currentWallpaper["artistDisplayName"]} title={currentWallpaper["title"]} objectBeginDate={currentWallpaper["objectBeginDate"]} objectEndDate={currentWallpaper["objectEndDate"]} collection={currentWallpaper["collection"]} />
                 </div>
                 <div className="basis-1/12 grid place-items-center ">
@@ -173,9 +172,7 @@ export default function Home() {
                     <a onClick={() => openPage(currentWallpaper["resourceLink"])}>
                       <ArrowTopRightOnSquareIcon />
                     </a>
-
                   </div>
-
                 </div>
               </div>
             </div>
