@@ -1,6 +1,5 @@
 import { Store } from "tauri-plugin-store-api";
 import { DEFAULT_INTERVAL_VALUE } from "./init";
-import { Wallpaper } from "../types";
 import { getWallpaper } from "./api";
 import { invoke } from '@tauri-apps/api/tauri'
 import { appDataDir } from '@tauri-apps/api/path';
@@ -26,7 +25,7 @@ export const init = async () => {
   await store.set("has_been_initialized", true);
   await store.set("collection","The Metropolitan Museum of Art")
   console.log("init get wallpaper")
-  const painting: Wallpaper = await getWallpaper(1, 1,"The Metropolitan Museum of Art")
+  const painting = await getWallpaper(1, 1,"The Metropolitan Museum of Art")
   console.log("done")
   await set_current_wallpaper(painting)
   await store.save()
@@ -59,8 +58,8 @@ export const get_favorites = async () => {
   return favorites
 }
 
-export const add_favorite = async (favorite: Wallpaper) => {
-  const pred_favorites: Wallpaper[] | null = await store.get("favorites")
+export const add_favorite = async (favorite) => {
+  const pred_favorites = await store.get("favorites")
   if (pred_favorites != null){
     await store.set("favorites", [...pred_favorites, favorite])
     await store.save()
@@ -71,7 +70,7 @@ export const add_favorite = async (favorite: Wallpaper) => {
   return true
 }
 export const remove_favorite = async (id:string) => {
-  const favorites:Wallpaper[] | null = await store.get("favorites")
+  const favorites = await store.get("favorites")
   if(favorites == null){
     console.log("favorites is null")
     return false
@@ -93,12 +92,12 @@ export const set_collection = async (collection) => {
   await store.save()
 }
 export const get_current_wallpaper = async () => {
-  const currect_wallpaper: Wallpaper | null = await store.get("current_wallpaper")
+  const currect_wallpaper = await store.get("current_wallpaper")
   if (currect_wallpaper != null && Object.keys(currect_wallpaper).length !== 0)
     return currect_wallpaper
   const collection = await get_collection()
   console.log("getting current wallpaper")
-  const painting: Wallpaper = await getWallpaper(1, 1,collection)
+  const painting = await getWallpaper(1, 1,collection)
   await set_current_wallpaper(painting)
   return painting
   // if we reached this point , this is the first time the user has opened our app , we will need to fetch a random wallpaper and set other params
@@ -110,7 +109,7 @@ export const clear_store = async () => {
   console.log(res)
 }
 
-export const set_current_wallpaper = async (wallpaper: Wallpaper) => {
+export const set_current_wallpaper = async (wallpaper) => {
   await store.set("current_wallpaper", wallpaper)
   await store.save()
   const appDataDirPath = await appDataDir();

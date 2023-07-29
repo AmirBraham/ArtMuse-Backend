@@ -1,6 +1,3 @@
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
-import { openPage } from "../page"
-import { Wallpaper } from "../types"
 
 const PaintingRow = ({ painting, index,unfavorite }) => {
     return <div className={index % 2 == 0 ? "bg-neutral-200" : ""}>
@@ -19,7 +16,7 @@ const PaintingRow = ({ painting, index,unfavorite }) => {
                 </div>
                 <div className="flex flex-row mt-5 ">
                     <div className="basis-1/2 ">
-                        <a className="btn btn-outline btn-xs" onClick={() => openPage(painting["resourceLink"])}>
+                        <a className="btn btn-outline btn-xs" href={painting["resourceLink"]} target="_blank">
                             Details
                         </a>
                     </div>

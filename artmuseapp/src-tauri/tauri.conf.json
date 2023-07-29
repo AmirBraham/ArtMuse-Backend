@@ -3,8 +3,7 @@
   "build": {
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:3000",
-    "distDir": "../out",
+    "devPath": "http://localhost:1420",
     "withGlobalTauri":true
   },
   "package": {
@@ -40,7 +39,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.amirbraham.artmuse",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -59,7 +58,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": ""
     },
     "updater": {
       "active": false

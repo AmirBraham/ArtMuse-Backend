@@ -1,19 +1,17 @@
 'use client';
 
-import Image from 'next/image'
-import Settings from './Settings'
-import Logo from './Logo'
-import Favorite from './Favorite'
-import PaintingDetails from './PaintingDetails'
+import SettingsButton from '../components/settings/SettingsButton'
+import Logo from '../components/root/Logo'
+import Favorite from '../components/root/FavoriteButton'
+import PaintingDetails from '../components/root/PaintingDetails'
 import { ArrowRightIcon, ArrowLeftIcon, ArrowTopRightOnSquareIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react';
-import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_limit, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_page } from './state/manager';
-import { getWallpaper, getWallpaperFromFavorite } from './state/api';
-import { Wallpaper } from './types';
-import { open } from '@tauri-apps/api/shell';
+import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_limit, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_page } from '../state/manager';
+import { getWallpaper, getWallpaperFromFavorite } from '../state/api';
 
 // add image_preview to wallpaper fields , need to generate preview on backend (preprocessing) 
-export const openPage = (page) => {
+export const openPage = async (page) => {
+  const {open} = await import('@tauri-apps/api/shell')
   open(page)
 }
 const Loadera = () => {
@@ -22,7 +20,7 @@ const Loadera = () => {
   );
 };
 
-export default function Home() {
+export default function Root() {
   const [loading, setLoading] = useState({
     load: true,
     loadedOnce: false,
@@ -85,10 +83,10 @@ export default function Home() {
     setLoading({ load: true, loadedOnce: true })
     const prev_page = await get_page()
     await set_page(prev_page + 1)
-    const page: number = await get_page()
-    const limit: number = await get_limit()
+    const page = await get_page()
+    const limit = await get_limit()
     
-    const wallpaper: Wallpaper = await getWallpaper(limit, page, collection)
+    const wallpaper = await getWallpaper(limit, page, collection)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
     setLoading({ load: false, loadedOnce: true })
@@ -96,7 +94,7 @@ export default function Home() {
 
   const setWallpaperFromFavorite = async () => {
     setLoading({ load: true, loadedOnce: true })
-    const wallpaper: Wallpaper = await getWallpaperFromFavorite(currentWallpaper)
+    const wallpaper = await getWallpaperFromFavorite(currentWallpaper)
     await set_current_wallpaper(wallpaper)
 
     setCurrentWallpaper(wallpaper)
@@ -109,10 +107,10 @@ export default function Home() {
 
     const prev_page = await get_page()
     await set_page(prev_page - 1)
-    const page: number = await get_page()
-    const limit: number = await get_limit()
+    const page = await get_page()
+    const limit = await get_limit()
     console.log(page)
-    const wallpaper: Wallpaper = await getWallpaper(limit, page, collection)
+    const wallpaper = await getWallpaper(limit, page, collection)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
     setLoading({ load: false, loadedOnce: true })
@@ -146,7 +144,7 @@ export default function Home() {
                     </button>
                   </div>
                   <div className="flex-none h-5 w-5" >
-                    <Settings />
+                    <SettingsButton />
                   </div>
                   {takeOnlyFromFavorite ? <div className="flex-none h-5 w-5" >
                     <ArrowPathIcon onClick={setWallpaperFromFavorite} />
@@ -157,7 +155,6 @@ export default function Home() {
                     <div className="flex-none h-5 w-5" >
                       <ArrowRightIcon onClick={nextWallpaper} />
                     </div></>)}
-
                 </div>
                 <div className="basis-1/4 ">
                   <Logo />

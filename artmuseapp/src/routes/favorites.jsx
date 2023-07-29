@@ -1,9 +1,8 @@
-'use client';
-import { ArrowLeftIcon, StarIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import {Link} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { get_favorites, remove_favorite } from "../state/manager";
-import PaintingRow from "./PaintingRow";
+import PaintingRow from "../components/favorites/PaintingRow";
 
 export default function Favorites() {
     const unfavorite = (id) => {
@@ -18,7 +17,7 @@ export default function Favorites() {
     return <main className="flex flex-col h-screen  bg-neutral-100 	">
         <div className="flex flex-row basis-1/4  bg-neutral-300 w-screen  p-3 place-content-start">
             <div className="basis-1/12 ">
-                <Link href="/settings">
+                <Link to="/settings">
                     <ArrowLeftIcon className="h-5 pt-1 " />
                 </Link>
             </div>

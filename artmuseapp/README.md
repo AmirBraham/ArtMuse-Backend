@@ -1,4 +1,7 @@
-Decided to handle stage management with json file.
-state.json contains all information : current wallpaper , run on startup , wallpaper change interval , (page , limit) to handle next/previous wallpaper logic api
-tauri/rust sends this json to frontend on startup so we get the most recent settings
-whenever user makes an ACTION(change wallpaper ,add to favorite..) we modify this json and sends it to tauri so it writes it to the disk
+# Tauri + React + Typescript
+
+This template should help get you started developing with Tauri, React and Typescript in Vite.
+
+## Recommended IDE Setup
+
+- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)

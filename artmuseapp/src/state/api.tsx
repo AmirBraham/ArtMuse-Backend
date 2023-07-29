@@ -1,10 +1,9 @@
 import { API_BASE_URL } from "./init";
-import { Wallpaper } from "../types";
 import * as fs from "@tauri-apps/api/fs";
 import { getClient, ResponseType } from "@tauri-apps/api/http";
-import { BaseDirectory, resourceDir } from '@tauri-apps/api/path';
-import { get_current_wallpaper, get_favorites, get_take_only_from_favorites } from "./manager";
-
+import { BaseDirectory } from '@tauri-apps/api/path';
+import {  get_favorites} from "./manager";
+import { fetch } from '@tauri-apps/api/http';
 
 export const getWallpaperFromFavorite = async (current_wallpaper) => {
   const favorites = await get_favorites()
@@ -18,14 +17,13 @@ export const getWallpaper = async (limit: number, page: number, collection: stri
   // fetch images offline , if they don't exist use API to download 10 images
   if (page < 1) page = 1
   const response = await fetch(API_BASE_URL + `paintings/?limit=${limit}&page=${page}&collection=${collection}`, {
-    headers: {
-      'accept': 'application/json'
-    }
+    method: 'GET',
+    timeout: 30,
   });
-  let res = await response.json()
+  let res = response["data"]
   console.log(res)
   res = res["paintings"][0]
-  const painting: Wallpaper = {
+  const painting = {
     id: res["id"],
     resourceLink: res["resourceLink"],
     objectBeginDate: res["objectBeginDate"],

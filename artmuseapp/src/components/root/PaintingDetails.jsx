@@ -1,18 +1,10 @@
 import { StarIcon } from '@heroicons/react/24/outline'
 import { FunctionComponent } from 'react'
 
-interface PaintingDetailsProps{
-    artistDisplayName:string;
-    objectEndDate:string;
-    objectBeginDate:string;
-    title:string;
-    collection:string;
-} 
 
-const PaintingDetails: FunctionComponent<PaintingDetailsProps> = ({ artistDisplayName,
+const PaintingDetails = ({ artistDisplayName,
     objectEndDate,
     objectBeginDate,
-
     title,
     collection }) => {
     return <div>
