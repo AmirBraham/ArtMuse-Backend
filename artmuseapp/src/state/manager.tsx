@@ -1,15 +1,11 @@
 import { Store } from "tauri-plugin-store-api";
-import { DEFAULT_INTERVAL_VALUE } from "./init";
+import { COLLECTIONS, DEFAULT_INTERVAL_VALUE } from "./init";
 import { getWallpaper } from "./api";
 import { invoke } from '@tauri-apps/api/tauri'
 import { appDataDir } from '@tauri-apps/api/path';
 import { enable, isEnabled, disable } from "tauri-plugin-autostart-api";
 
-
-
 const store = new Store(".settings.dat");
-
-
 
 export const init = async () => {
   const has_been_initialized: boolean | null = await store.get("has_been_initialized")
@@ -23,7 +19,7 @@ export const init = async () => {
   await store.set("start_on_startup", false)
   await store.set("favorites", [])
   await store.set("has_been_initialized", true);
-  await store.set("collection","The Metropolitan Museum of Art")
+  await store.set("collection",COLLECTIONS[0])
   console.log("init get wallpaper")
   const painting = await getWallpaper(1, 1,"The Metropolitan Museum of Art")
   console.log("done")
@@ -84,7 +80,7 @@ export const get_collection = async () => {
   const collection = await store.get("collection")
   if(collection != null)
     return collection
-  return "The Metropolitan Museum of Art"
+  return COLLECTIONS[0]
 }
 
 export const set_collection = async (collection) => {

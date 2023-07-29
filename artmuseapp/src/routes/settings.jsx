@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, StarIcon } from "@heroicons/react/24/solid";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toggle_start_on_startup, toggle_take_only_from_favorites, get_start_on_startup, get_take_only_from_favorites, clear_store } from "../state/manager";
 import { useEffect, useState } from "react";
 
@@ -20,8 +20,8 @@ export default function Settings() {
         await toggle_take_only_from_favorites()
         setTakeOnlyFromFavorites(!takeOnlyFromFavorites)
     }
-    return <main className="flex flex-col min-h-screen  bg-neutral-100 ">
-        <div className="flex flex-row basis-1/4  bg-neutral-300 w-screen  p-3 place-content-start">
+    return <main className="flex flex-col h-screen  bg-neutral-100 ">
+        <div className="flex flex-row basis-3/12   bg-neutral-300 w-screen  p-3 place-content-start">
             <div className="basis-1/12 ">
                 <Link to="/">
                     <ArrowLeftIcon className="h-5 pt-1 " />
@@ -38,7 +38,7 @@ export default function Settings() {
                 </div>
             </div>
         </div>
-        <div className="flex flex-col basis-3/4 px-4">
+        <div className="flex flex-col basis-7/12  px-4 ">
 
             <label className="label cursor-pointer">
                 Start on Startup
@@ -48,12 +48,18 @@ export default function Settings() {
                 Take only from favorites
                 <input onChange={toggleTakeFromFavorites} type="checkbox" checked={takeOnlyFromFavorites} className="checkbox" />
             </label>
-
-            <button onClick={clear_store}>Clear Store</button>
-
-
+           
 
         </div>
+        <div className="flex flex-col basis-1/12 pb-3  items-center">
+             
+             <div className="text-xs pb-1">
+                 <button onClick={clear_store}>Clear Cache</button>
+             </div>
+             <div>
+                 <p className="text-xs">Developed by Amir Braham</p>
+             </div>
+         </div>
 
     </main>
 }

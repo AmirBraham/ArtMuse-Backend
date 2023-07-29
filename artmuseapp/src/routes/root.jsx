@@ -81,11 +81,16 @@ export default function Root() {
 
   const nextWallpaper = async () => {
     setLoading({ load: true, loadedOnce: true })
-    const prev_page = await get_page()
+    let prev_page = await get_page()
+    const collection = await get_collection()
+    const collection_size = collection["size"]
+    if(prev_page + 1 > collection_size) {
+      console.log("reseting to first one ")
+      prev_page = 0
+    }
     await set_page(prev_page + 1)
     const page = await get_page()
     const limit = await get_limit()
-    
     const wallpaper = await getWallpaper(limit, page, collection)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)
@@ -104,7 +109,14 @@ export default function Root() {
 
   const previousWallpaper = async () => {
     setLoading({ load: true, loadedOnce: true })
-    const prev_page = await get_page()
+    let prev_page = await get_page()
+    const collection = await get_collection()
+    const collection_size = collection["size"]
+    if(prev_page-1 <=0) {
+      prev_page = collection_size +1 
+    }
+    console.log(prev_page)
+
     await set_page(prev_page - 1)
     const page = await get_page()
     const limit = await get_limit()

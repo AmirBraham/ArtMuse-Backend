@@ -16,12 +16,12 @@ export const getWallpaper = async (limit: number, page: number, collection: stri
   // majors changes needed here : 
   // fetch images offline , if they don't exist use API to download 10 images
   if (page < 1) page = 1
-  const response = await fetch(API_BASE_URL + `paintings/?limit=${limit}&page=${page}&collection=${collection}`, {
+  const collection_name =   collection["name"]
+  const response = await fetch(API_BASE_URL + `paintings/?limit=${limit}&page=${page}&collection=${collection_name}`, {
     method: 'GET',
     timeout: 30,
   });
   let res = response["data"]
-  console.log(res)
   res = res["paintings"][0]
   const painting = {
     id: res["id"],
@@ -31,7 +31,7 @@ export const getWallpaper = async (limit: number, page: number, collection: stri
     artistDisplayName: res["artistDisplayName"],
     title: res["title"],
     imageLink: res["imageLink"],
-    collection: res["collection"],
+    collection: collection_name,
   }
   await downloadWallpaper(painting)
   return painting
