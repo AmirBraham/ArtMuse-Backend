@@ -1,3 +1,4 @@
+import React from 'react'
 
 const PaintingRow = ({ painting, index,unfavorite }) => {
     return <div className={index % 2 == 0 ? "bg-neutral-200" : ""}>

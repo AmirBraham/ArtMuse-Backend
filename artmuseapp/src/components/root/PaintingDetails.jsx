@@ -1,5 +1,4 @@
-import { StarIcon } from '@heroicons/react/24/outline'
-import { FunctionComponent } from 'react'
+import React from 'react'
 
 
 const PaintingDetails = ({ artistDisplayName,

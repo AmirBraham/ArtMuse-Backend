@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { StarIcon } from '@heroicons/react/24/outline'
 import { StarIcon as StartIconSolid } from '@heroicons/react/24/solid'
 
