@@ -42,6 +42,7 @@ export default function Home() {
               <Image className="h-auto max-w-full" src="/paintings/4.jpg" width={700} height={300} alt="" />
             </FloatingDiv>
             <FloatingDiv>
+              <div></div>
             </FloatingDiv>
             <FloatingDiv>
               <Image className="h-auto max-w-full" src="/paintings/6.jpg" width={400} height={300} alt="" />

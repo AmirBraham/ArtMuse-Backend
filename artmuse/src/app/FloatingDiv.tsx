@@ -1,9 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
+import React from 'react';
 
 
-
-export default function FloatingDiv({ children }) {
+type Props = {
+    children: JSX.Element | null
+  };
+const  FloatingDiv: React.FC<Props> = ({ children }) => {
     return (
 
         <motion.div
@@ -37,3 +40,4 @@ export default function FloatingDiv({ children }) {
 
     );
 }
+export default FloatingDiv
