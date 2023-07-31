@@ -6,12 +6,12 @@ import Favorite from '../components/root/FavoriteButton'
 import PaintingDetails from '../components/root/PaintingDetails'
 import { ArrowRightIcon, ArrowLeftIcon, ArrowTopRightOnSquareIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react';
-import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_limit, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_page } from '../state/manager';
+import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_interval, get_limit, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_page } from '../state/manager';
 import { getWallpaper, getWallpaperFromFavorite } from '../state/api';
 
 // add image_preview to wallpaper fields , need to generate preview on backend (preprocessing) 
 export const openPage = async (page) => {
-  const {open} = await import('@tauri-apps/api/shell')
+  const { open } = await import('@tauri-apps/api/shell')
   open(page)
 }
 const Loadera = () => {
@@ -31,12 +31,28 @@ export default function Root() {
   const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
 
   useEffect(() => {
+    get_interval().then(res => {
+      console.log("interval : " , res)
+      const interval_id = setInterval(function () { }, Number.MAX_SAFE_INTEGER);
+      // Clear any timeout/interval up to that id
+      for (let i = 1; i < interval_id; i++) {
+        clearInterval(i);
+      }
+      if (res != "Manually") {
+        const task = setInterval(() => {
+          nextWallpaper()
+        }, res);
+
+      }
+    })
+  },[])
+  useEffect(() => {
     get_take_only_from_favorites().then(res => setTakeOnlyFromFavorite(res))
   }, [])
 
   useEffect(() => {
     get_collection().then(res => setCollection(res))
-  },[])
+  }, [])
   useEffect(() => {
     if (loading["load"] == true && loading["loadedOnce"] == false) {
       init()
@@ -59,7 +75,7 @@ export default function Root() {
 
   const check_favorite = async (id) => {
     const favorites = await get_favorites()
-    if(favorites.length == 0 ){
+    if (favorites.length == 0) {
       return false
     }
     const res = favorites.find(painting => painting["id"] == id)
@@ -84,7 +100,7 @@ export default function Root() {
     let prev_page = await get_page()
     const collection = await get_collection()
     const collection_size = collection["size"]
-    if(prev_page + 1 > collection_size) {
+    if (prev_page + 1 > collection_size) {
       console.log("reseting to first one ")
       prev_page = 0
     }
@@ -112,8 +128,8 @@ export default function Root() {
     let prev_page = await get_page()
     const collection = await get_collection()
     const collection_size = collection["size"]
-    if(prev_page-1 <=0) {
-      prev_page = collection_size +1 
+    if (prev_page - 1 <= 0) {
+      prev_page = collection_size + 1
     }
     console.log(prev_page)
 
@@ -159,9 +175,9 @@ export default function Root() {
                   {takeOnlyFromFavorite ? <div className="flex-none h-5 w-5" >
                     <ArrowPathIcon onClick={setWallpaperFromFavorite} />
                   </div> : (<>
-                  <div className="flex-none h-5 w-5" >
-                    <ArrowLeftIcon onClick={previousWallpaper} />
-                  </div>
+                    <div className="flex-none h-5 w-5" >
+                      <ArrowLeftIcon onClick={previousWallpaper} />
+                    </div>
                     <div className="flex-none h-5 w-5" >
                       <ArrowRightIcon onClick={nextWallpaper} />
                     </div></>)}

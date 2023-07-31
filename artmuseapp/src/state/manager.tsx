@@ -29,9 +29,10 @@ export const init = async () => {
 }
 
 
-export const set_interval = async (interval: number) => {
+export const set_interval = async (interval: any) => {
   await store.set("interval", interval);
   await store.save();
+  return interval
 }
 
 export const get_interval = async () => {
@@ -41,6 +42,7 @@ export const get_interval = async () => {
     await store.save();
     return DEFAULT_INTERVAL_VALUE
   }
+
   return curr_interval
 }
 

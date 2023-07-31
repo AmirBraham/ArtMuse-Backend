@@ -1,4 +1,4 @@
-export const DEFAULT_INTERVAL_VALUE = 15
+export const DEFAULT_INTERVAL_VALUE = "Manually"
 export const COLLECTIONS = [
         {name:"The Metropolitan Museum of Art",size:386}
 ]

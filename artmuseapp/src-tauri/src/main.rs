@@ -1,17 +1,14 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use clokwerk::{Job, Scheduler, TimeUnits};
 use tauri::{
     api::path::{app_data_dir, data_dir, local_data_dir},
+    async_runtime::spawn,
     CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,
 };
 use tauri_plugin_autostart::MacosLauncher;
 use tauri_plugin_positioner::{Position, WindowExt};
 use wallpaper;
 // Import week days and WeekDay
-use clokwerk::Interval::*;
-use std::thread;
-use std::time::Duration;
 
 #[tauri::command]
 fn change_wallpaper(id: String, collection: String, appdata: String) -> String {
@@ -19,11 +16,10 @@ fn change_wallpaper(id: String, collection: String, appdata: String) -> String {
     println!("{}", final_path);
     // Sets the wallpaper for the current desktop from a URL.
     wallpaper::set_from_path(&final_path).unwrap();
+
     // Returns the wallpaper of the current desktop.
     format!("state returned")
 }
-
-
 
 fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
