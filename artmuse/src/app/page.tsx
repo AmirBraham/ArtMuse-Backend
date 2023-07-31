@@ -1,6 +1,8 @@
+"use client";
 import Image from 'next/image'
-import { motion } from "framer-motion"
 import FloatingDiv from './FloatingDiv'
+import { CheckBadgeIcon } from '@heroicons/react/24/outline'
+import { TypeAnimation } from 'react-type-animation';
 
 export default function Home() {
   return (
@@ -52,10 +54,13 @@ export default function Home() {
             </FloatingDiv>
           </div>
           <div>
-            <div className='text-2 xl text-center pt-10 space-y-3 drop-shadow-xl'>
+            <div className='text-2xl text-center pt-10 space-y-3 drop-shadow-xl'>
               <p>Unleash Artistry on Your Screen - Discover Your Next Favorite Wallpaper Today!</p>
-              <p>An ever-expanding array of artfully chosen paintings, Transform your computer into a captivating gallery.</p>
+              <p className='pb-5 text-center'>
+                An ever-expanding array of artfully chosen paintings to transform your computer into a captivating gallery.
+              </p>
             </div>
+
 
           </div>
         </div>
@@ -66,21 +71,52 @@ export default function Home() {
       <div className='pt-10 flex flex-col w-screen z-20 bg-neutral-100 place-items-center '>
 
         <div className='flex flex-col justify-center'>
-          <p className='text-md text-center'>
+          <p className='text-lg pb-5 text-center'>
             Get Artmuse now
           </p>
+
           <p className='text-2xl text-center'>
-          Available on Windows
+            Available now on Windows
           </p>
-          <p className='text-xl text-center'>
-          Arriving soon on Mac & Linux
+          <p className='text-md text-gray-800	 text-center'>
+            soon on Mac & Linux
           </p>
-        <Image className='pl-5 pt-10' src="/Get it from MS.png" width={200} height={300} alt='' />
+          
+          <div className="pl-5 pt-2">
+            <Image className="mx-auto" src="/Get it from MS.png" width={200} height={300} alt='' />
+          </div>
         </div>
-        <Image className="justify-center" src="/mockup.png" width={1000} height={300} alt="" />
-
-
-
+        <div>
+          <div className='flex flex-col'>
+            <Image className="justify-center" src="/mockup.png" width={1000} height={300} alt="" />
+           
+          </div>
+          <div className='text-center pb-5'>
+          <TypeAnimation
+            sequence={[
+              // Same substring at the start will only be typed out once, initially
+              'Crystal-clear quality',
+              1000, // wait 1s before replacing "Mice" with "Hamsters"
+              'Add Wallpapers to favorites for offline use',
+              2000,
+              'New updates with new collections ',
+              1000,
+              "All pictures are from some of the world's best galleries and museums.",
+              3000
+            ]}
+            wrapper="span"
+            deletionSpeed={80}
+            speed={50}
+            style={{ fontSize: '2em', display: 'inline-block' }}
+            cursor={false}
+            repeat={Infinity}
+          />
+          </div>
+          
+        </div>
+      </div>
+      <div className='p-10 flex flex-col w-screen z-20 bg-neutral-200 place-items-center '>
+        <p className='text-lg'>Developed by Amir Braham</p>
       </div>
 
     </main>
