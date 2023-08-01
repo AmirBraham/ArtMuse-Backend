@@ -33,6 +33,7 @@ fn main() {
         .plugin(tauri_plugin_positioner::init())
         .system_tray(SystemTray::new().with_menu(system_tray_menu))
         .on_system_tray_event(|app, event| {
+            
             tauri_plugin_positioner::on_tray_event(app, &event);
             match event {
                 SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
