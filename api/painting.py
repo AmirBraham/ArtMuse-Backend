@@ -9,10 +9,14 @@ router = APIRouter()
 def get_paintings(db: Session = Depends(get_db), limit: int = 10, page: int = 1, search: str = '',collection:str=''):
     print("hello")
     skip = (page - 1) * limit
-    paintings = db.query(models.Painting).filter(
-        models.Painting.collection == collection
-    ).filter(
-        models.Painting.title.contains(search)).limit(limit).offset(skip).all()
+    if(collection != ""):
+        paintings = db.query(models.Painting).filter(
+            models.Painting.collection == collection
+        ).filter(
+            models.Painting.title.contains(search)).limit(limit).offset(skip).all()
+    else:
+          paintings = db.query(models.Painting).filter(
+            models.Painting.title.contains(search)).limit(limit).offset(skip).all()
     return {'status': 'success', 'results': len(paintings), 'paintings': paintings}
 
 @router.post('/painting', status_code=status.HTTP_201_CREATED)
