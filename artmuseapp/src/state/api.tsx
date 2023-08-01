@@ -12,6 +12,10 @@ export const getWallpaperFromFavorite = async (current_wallpaper) => {
   await downloadWallpaper(painting)
   return painting
 }
+
+
+
+
 export const getWallpaper = async (limit: number, page: number, collection: string) => {
   // majors changes needed here : 
   // fetch images offline , if they don't exist use API to download 10 images

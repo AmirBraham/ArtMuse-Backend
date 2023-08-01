@@ -7,8 +7,8 @@ export default function Favorite({ isFavorite = false, addToFavorite, removeFrom
     return <>
         {
             isFavorite ? <StartIconSolid onClick={
-                removeFromFavorite} className="h-5 w-5 " /> : <StarIcon onClick={
-                    addToFavorite} className="h-5 w-5 " />
+                removeFromFavorite} className="h-5 w-5 text text-white" /> : <StarIcon onClick={
+                    addToFavorite} className="h-5 w-5 text-white" />
         }
     </>
 

@@ -6,7 +6,7 @@ const PaintingDetails = ({ artistDisplayName,
     objectBeginDate,
     title,
     collection }) => {
-    return <div>
+    return <div className='text-white'>
         <h1>
             {title}
         </h1>

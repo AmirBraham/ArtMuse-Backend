@@ -104,7 +104,7 @@ export default function Settings() {
                 <button onClick={clear_store}>Clear Cache</button>
             </div>
             <div>
-                <p className="text-xs">Developed by Amir Braham</p>
+                <p className="text-xs">Have a suggestion or a problem ? Reach out to us <a target="_blank" href="https://www.google.com"  >here</a> </p>
             </div>
         </div>
 

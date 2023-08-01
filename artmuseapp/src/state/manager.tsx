@@ -67,6 +67,19 @@ export const add_favorite = async (favorite) => {
   }
   return true
 }
+
+export const set_wallpaper_from_favorite = async (wallpaperID) => {
+  const favorites = await get_favorites()
+  const res = favorites.filter(painting => painting["id"] == wallpaperID)
+  if(res.length == 0) {
+    return false
+  }
+  const painting = res[0]
+  await set_current_wallpaper(painting)
+  return painting
+}
+
+
 export const remove_favorite = async (id:string) => {
   const favorites = await store.get("favorites")
   if(favorites == null){

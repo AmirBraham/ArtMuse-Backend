@@ -9,11 +9,7 @@ import { useEffect, useState } from 'react';
 import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_interval, get_limit, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_page } from '../state/manager';
 import { getWallpaper, getWallpaperFromFavorite } from '../state/api';
 
-// add image_preview to wallpaper fields , need to generate preview on backend (preprocessing) 
-export const openPage = async (page) => {
-  const { open } = await import('@tauri-apps/api/shell')
-  open(page)
-}
+
 const Loadera = () => {
   return (
     <span className="loading loading-spinner loading-lg"></span>
@@ -172,13 +168,13 @@ export default function Root() {
                   <div className="flex-none h-5 w-5" >
                     <SettingsButton />
                   </div>
-                  {takeOnlyFromFavorite ? <div className="flex-none h-5 w-5" >
+                  {takeOnlyFromFavorite ? <div className="flex-none h-5 w-5 text-white " >
                     <ArrowPathIcon onClick={setWallpaperFromFavorite} />
                   </div> : (<>
-                    <div className="flex-none h-5 w-5" >
+                    <div className="flex-none h-5 w-5 text-white" >
                       <ArrowLeftIcon onClick={previousWallpaper} />
                     </div>
-                    <div className="flex-none h-5 w-5" >
+                    <div className="flex-none h-5 w-5 text-white" >
                       <ArrowRightIcon onClick={nextWallpaper} />
                     </div></>)}
                 </div>
@@ -191,8 +187,8 @@ export default function Root() {
                   <PaintingDetails artistDisplayName={currentWallpaper["artistDisplayName"]} title={currentWallpaper["title"]} objectBeginDate={currentWallpaper["objectBeginDate"]} objectEndDate={currentWallpaper["objectEndDate"]} collection={currentWallpaper["collection"]} />
                 </div>
                 <div className="basis-1/12 grid place-items-center ">
-                  <div className="flex-none h-5 w-5">
-                    <a onClick={() => openPage(currentWallpaper["resourceLink"])}>
+                  <div className="flex-none h-5 w-5 text-white">
+                    <a target='_blank' href={currentWallpaper["resourceLink"]}>
                       <ArrowTopRightOnSquareIcon />
                     </a>
                   </div>
