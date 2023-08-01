@@ -27,24 +27,30 @@ export default function Root() {
   const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
   useEffect(() => {
     setInterval(function () {
+      console.log("checking")
       const currect_date = new Date()
       get_next_wallpaper_date().then(date => {
         const nextWallpaperDate = new Date(date)
-        if (currect_date > nextWallpaperDate ) {
-          if(loading["load"])
+        console.log(currect_date,nextWallpaperDate)
+        if (currect_date > nextWallpaperDate) {
+          if (loading["load"])
             return
-          nextWallpaper()
-          get_interval().then(interval => {
-            if (interval != null) {
-              const next_date = addMilliseconds(currect_date, interval)
-              set_next_wallpaper_date(next_date)
+          nextWallpaper().then(() => {
+            get_interval().then(interval => {
+              if (interval != null) {
+                const next_date = addMilliseconds(currect_date, interval)
+                set_next_wallpaper_date(next_date).then(() =>window.location.reload())
 
-            }
-          })
+              }
+            })
+          }
+
+          )
+
 
         }
       })
-    }, 10 * 1000);
+    },  5*1000);
   }, [])
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import { ArrowLeftIcon, StarIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { toggle_start_on_startup, toggle_take_only_from_favorites, get_start_on_startup, get_take_only_from_favorites, clear_store,  get_favorites, get_next_wallpaper_date, set_next_wallpaper_date, get_interval, set_interval } from "../state/manager";
+import { toggle_start_on_startup, toggle_take_only_from_favorites, get_start_on_startup, get_take_only_from_favorites, clear_store, get_favorites, get_next_wallpaper_date, set_next_wallpaper_date, get_interval, set_interval } from "../state/manager";
 import { useEffect, useState } from "react";
-import { addMilliseconds} from "date-fns";
+import { addMilliseconds } from "date-fns";
 export default function Settings() {
     const [takeOnlyFromFavorites, setTakeOnlyFromFavorites] = useState(false)
     const [startOnStartup, setStartOnStartup] = useState(false)
@@ -16,7 +16,7 @@ export default function Settings() {
         }
         const millisecondsToAddToCurrentDate = parseInt(e.target.value)
         let currentDate = new Date()
-        const next_wallpaper_date =  addMilliseconds(currentDate,millisecondsToAddToCurrentDate)
+        const next_wallpaper_date = addMilliseconds(currentDate, millisecondsToAddToCurrentDate)
         set_next_wallpaper_date(next_wallpaper_date)
         set_interval(e.target.value)
         return next_wallpaper_date
@@ -28,10 +28,10 @@ export default function Settings() {
         })
         get_take_only_from_favorites().then(res => setTakeOnlyFromFavorites(res))
         get_interval().then(res => {
-            console.log("interval , " , res)
-            if(res == null) {
+            console.log("interval , ", res)
+            if (res == null) {
                 setValue("Manually")
-            }else{
+            } else {
                 setValue(res)
             }
 
@@ -84,8 +84,6 @@ export default function Settings() {
                     handleChange
                 }>
                     <option value="Manually">Manually</option>
-                    <option value="100000">1 minute</option>
-
                     <option value="600000">10 minutes</option>
                     <option value="1800000">30 minutes</option>
                     <option value="3600000">1 hour</option>
