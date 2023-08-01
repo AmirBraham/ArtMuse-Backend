@@ -29,14 +29,17 @@ export default function Root() {
   const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
   const [backgroundPath, setBackgroundPath] = useState("")
   useEffect(() => {
+    console.log(currentWallpaper)
+
+   
     appDataDir().then(res => {
+
       const wallpaper_path = "wallpapers/" + currentWallpaper["collection"] + "/wallpaper-" + currentWallpaper["id"] + ".jpg"
       const full_path = res + wallpaper_path
       const assetUrl = convertFileSrc(full_path);
-
       setBackgroundPath(assetUrl)
-    }, [currentWallpaper])
-  })
+    })
+  }, [currentWallpaper])
   useEffect(() => {
     setInterval(function () {
       console.log("checking")
