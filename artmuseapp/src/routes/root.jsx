@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_limit, get_next_wallpaper_date, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_next_wallpaper_date, set_page, get_interval } from '../state/manager';
 import { getWallpaper, getWallpaperFromFavorite } from '../state/api';
 import { addMilliseconds, getTime, parse } from 'date-fns';
+import { appDataDir } from '@tauri-apps/api/path';
+import { convertFileSrc } from '@tauri-apps/api/tauri';
 
 const Loadera = () => {
   return (
@@ -25,21 +27,32 @@ export default function Root() {
   const [currentWallpaper, setCurrentWallpaper] = useState({})
   const [collection, setCollection] = useState("")
   const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
+  const [backgroundPath, setBackgroundPath] = useState("")
+  useEffect(() => {
+    appDataDir().then(res => {
+      const wallpaper_path = "wallpapers/" + currentWallpaper["collection"] + "/wallpaper-" + currentWallpaper["id"] + ".jpg"
+      const full_path = res + wallpaper_path
+      const assetUrl = convertFileSrc(full_path);
+
+      setBackgroundPath(assetUrl)
+    }, [currentWallpaper])
+  })
   useEffect(() => {
     setInterval(function () {
       console.log("checking")
       const currect_date = new Date()
       get_next_wallpaper_date().then(date => {
         const nextWallpaperDate = new Date(date)
-        console.log(currect_date,nextWallpaperDate)
+        console.log(currect_date, nextWallpaperDate)
         if (currect_date > nextWallpaperDate) {
           if (loading["load"])
             return
-          nextWallpaper().then(() => {
+            return
+           nextWallpaper().then(() => {
             get_interval().then(interval => {
               if (interval != null) {
                 const next_date = addMilliseconds(currect_date, interval)
-                set_next_wallpaper_date(next_date).then(() =>window.location.reload())
+                set_next_wallpaper_date(next_date).then(() => window.location.reload())
 
               }
             })
@@ -50,7 +63,7 @@ export default function Root() {
 
         }
       })
-    },  5*1000);
+    }, 5 * 1000);
   }, [])
 
   useEffect(() => {
@@ -160,7 +173,7 @@ export default function Root() {
         loading.load && !loading.loadedOnce ? (
           <Loadera />
         ) : (
-          <main style={{ backgroundImage: "url(" + currentWallpaper["imageLink"] + ")", backgroundSize: "cover", backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} className="flex min-h-screen flex-col items-center justify-between container rounded-md">
+          <main style={{ backgroundImage:'url('+ backgroundPath+")", backgroundSize: "400px 300px", backgroundRepeat:"no-repeat" }} className="flex min-h-screen flex-col items-center justify-between container rounded-md">
             {
               loading.load && loading.loadedOnce ? (
                 <div className='fixed bg-black/50 w-screen grid h-screen place-items-center gap-4'>
@@ -212,6 +225,7 @@ export default function Root() {
                 </div>
               </div>
             </div>
+            <img width={200}  src='/Users/amirbraham/Library/Application Support/com.amirbraham.artmuse/wallpapers/The Metropolitan Museum of Art/wallpaper-ae19bd78-b6ac-4a06-ba30-66800ad3b7f1.jpg'></img>
           </main>)
       }
     </>

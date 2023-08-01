@@ -1,12 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { set_wallpaper_from_favorite } from '../../state/manager'
-
+import { convertFileSrc } from '@tauri-apps/api/tauri'
+import { appDataDir } from '@tauri-apps/api/path'
 const PaintingRow = ({ painting, index, unfavorite }) => {
+   
+    const [image,setImage] = useState("")
+    useEffect(() => {
+        appDataDir().then(res =>{
+            const wallpaper_path = "wallpapers/" + painting["collection"] + "/wallpaper-" + painting["id"] + ".jpg"
+            const full_path = res + wallpaper_path
+            const assetUrl = convertFileSrc(full_path);
+            setImage(assetUrl)
+        })
+    },[])
+    
     return <div className={index % 2 == 0 ? "bg-neutral-200" : ""}>
         <div className="flex flex-row items-center space-x-3 w-screen mb-1">
             <div className="avatar basis-1/4">
                 <div className="mask  w-32 h-18">
-                    <img src={painting["imageLink"]} />
+                    <img src={image} />
                 </div>
             </div>
             <div className="basis-3/4 flex flex-col">
