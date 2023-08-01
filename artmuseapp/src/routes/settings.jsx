@@ -1,35 +1,25 @@
 import { ArrowLeftIcon, StarIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { toggle_start_on_startup, toggle_take_only_from_favorites, get_start_on_startup, get_take_only_from_favorites, clear_store, get_interval, set_interval, get_favorites } from "../state/manager";
+import { toggle_start_on_startup, toggle_take_only_from_favorites, get_start_on_startup, get_take_only_from_favorites, clear_store,  get_favorites, get_next_wallpaper_date, set_next_wallpaper_date, get_interval, set_interval } from "../state/manager";
 import { useEffect, useState } from "react";
+import { addMilliseconds} from "date-fns";
 export default function Settings() {
     const [takeOnlyFromFavorites, setTakeOnlyFromFavorites] = useState(false)
     const [startOnStartup, setStartOnStartup] = useState(false)
     const [value, setValue] = useState("Manually");
-    useEffect(() => {
-        get_interval().then(res => {
-            setValue(parseInt(res))
-        })
-    }, [])
     const handleChange = async (e) => {
-        const prev_value = await get_interval()
-        console.log("prev", prev_value)
-        console.log(e.target.value);
-
-        if (e.target.value == prev_value) {
-            console.log("same value ")
-            return prev_value
-        }
-
-        let final_value = null
+        setValue(e.target.value)
         if (e.target.value == "Manually") {
-            final_value = "Manually"
-        } else {
-            final_value = parseInt(e.target.value)
+            set_next_wallpaper_date(null)
+            set_interval(null)
+            return
         }
-        const res = await set_interval(final_value)
-        console.log("setting value to ", res)
-        return final_value
+        const millisecondsToAddToCurrentDate = parseInt(e.target.value)
+        let currentDate = new Date()
+        const next_wallpaper_date =  addMilliseconds(currentDate,millisecondsToAddToCurrentDate)
+        set_next_wallpaper_date(next_wallpaper_date)
+        set_interval(e.target.value)
+        return next_wallpaper_date
     };
 
     useEffect(() => {
@@ -37,6 +27,15 @@ export default function Settings() {
             setStartOnStartup(res)
         })
         get_take_only_from_favorites().then(res => setTakeOnlyFromFavorites(res))
+        get_interval().then(res => {
+            console.log("interval , " , res)
+            if(res == null) {
+                setValue("Manually")
+            }else{
+                setValue(res)
+            }
+
+        })
     }, [])
     const toggleStartOnStartup = async () => {
         await toggle_start_on_startup()
@@ -44,7 +43,7 @@ export default function Settings() {
     }
     const toggleTakeFromFavorites = async () => {
         const favorites = await get_favorites()
-        if(!takeOnlyFromFavorites  && favorites.length == 0 ) {
+        if (!takeOnlyFromFavorites && favorites.length == 0) {
             alert("Add Wallpapers to favorites before ")
             return
         }
@@ -81,10 +80,9 @@ export default function Settings() {
             </label>
             <label className="label cursor-pointer">
                 Change Wallpaper
-                <select value={value} className=" ring-1 ring-black ring-opacity-5 rounded-md bg-white shadow-lg" onChange={(e) => {
-                    setValue(e.target.value);
-                    handleChange(e)
-                }}>
+                <select value={value} className=" ring-1 ring-black ring-opacity-5 rounded-md bg-white shadow-lg" onChange={
+                    handleChange
+                }>
                     <option value="Manually">Manually</option>
                     <option value="100000">1 minute</option>
 

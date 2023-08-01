@@ -12,7 +12,8 @@ export const init = async () => {
   if (has_been_initialized) {
     return true
   }
-  await set_interval(DEFAULT_INTERVAL_VALUE)
+  await set_interval(null)
+  await set_next_wallpaper_date(null)
   await set_limit(1)
   await set_page(1)
   await store.set("take_only_from_favorites", false)
@@ -22,28 +23,30 @@ export const init = async () => {
   await store.set("collection",COLLECTIONS[0])
   console.log("init get wallpaper")
   const painting = await getWallpaper(1, 1,"The Metropolitan Museum of Art")
-  console.log("done")
   await set_current_wallpaper(painting)
   await store.save()
   return false
 }
 
-
-export const set_interval = async (interval: any) => {
-  await store.set("interval", interval);
-  await store.save();
+export const set_interval = async (interval:any) => {
+  await store.set("interval",interval)
+  await store.save()
   return interval
 }
 
 export const get_interval = async () => {
-  const curr_interval = await store.get("interval")
-  if (curr_interval == null) {
-    await store.set("interval", DEFAULT_INTERVAL_VALUE);
-    await store.save();
-    return DEFAULT_INTERVAL_VALUE
-  }
+  const res = await store.get("interval")
+  return res
+}
+export const set_next_wallpaper_date = async (date: any) => {
+  await store.set("next_wallpaper_date", date);
+  await store.save();
+  return date
+}
 
-  return curr_interval
+export const get_next_wallpaper_date = async () => {
+  const next_wallpaper_date = await store.get("next_wallpaper_date")
+  return next_wallpaper_date
 }
 
 export const get_favorites = async () => {

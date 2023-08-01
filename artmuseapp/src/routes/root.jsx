@@ -6,9 +6,9 @@ import Favorite from '../components/root/FavoriteButton'
 import PaintingDetails from '../components/root/PaintingDetails'
 import { ArrowRightIcon, ArrowLeftIcon, ArrowTopRightOnSquareIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react';
-import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_interval, get_limit, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_page } from '../state/manager';
+import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_limit, get_next_wallpaper_date, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_next_wallpaper_date, set_page, get_interval } from '../state/manager';
 import { getWallpaper, getWallpaperFromFavorite } from '../state/api';
-
+import { addMilliseconds, getTime, parse } from 'date-fns';
 
 const Loadera = () => {
   return (
@@ -25,23 +25,34 @@ export default function Root() {
   const [currentWallpaper, setCurrentWallpaper] = useState({})
   const [collection, setCollection] = useState("")
   const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
+  useEffect(() => {
+    setInterval(function () {
+      const currect_date = new Date()
+      get_next_wallpaper_date().then(date => {
+        const nextWallpaperDate = new Date(date)
+        if (currect_date > nextWallpaperDate ) {
+          if(loading["load"])
+            return
+          nextWallpaper()
+          get_interval().then(interval => {
+            if (interval != null) {
+              const next_date = addMilliseconds(currect_date, interval)
+              set_next_wallpaper_date(next_date)
+
+            }
+          })
+
+        }
+      })
+    }, 10 * 1000);
+  }, [])
 
   useEffect(() => {
-    get_interval().then(res => {
-      console.log("interval : " , res)
-      const interval_id = setInterval(function () { }, Number.MAX_SAFE_INTEGER);
-      // Clear any timeout/interval up to that id
-      for (let i = 1; i < interval_id; i++) {
-        clearInterval(i);
-      }
-      if (res != "Manually") {
-        const task = setInterval(() => {
-          nextWallpaper()
-        }, res);
-
-      }
+    get_next_wallpaper_date().then(res => {
+      console.log("next wallpaper date : ", res)
     })
-  },[])
+  }, [])
+
   useEffect(() => {
     get_take_only_from_favorites().then(res => setTakeOnlyFromFavorite(res))
   }, [])
