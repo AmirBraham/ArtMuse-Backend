@@ -14,7 +14,7 @@ export default function Favorites() {
     useEffect(() => {
         get_favorites().then(res => { console.log(res); setFavorites(res) })
     }, [])
-    return <main className="flex flex-col h-screen  bg-neutral-100 	">
+    return <main className="flex flex-col h-screen bg-neutral-100 overflow-x-hidden		">
         <div className="flex flex-row basis-1/4  bg-neutral-300 w-screen  p-3 place-content-start">
             <div className="basis-1/12 ">
                 <Link to="/settings">

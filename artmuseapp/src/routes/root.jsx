@@ -14,7 +14,7 @@ import { convertFileSrc } from '@tauri-apps/api/tauri';
 
 const Loadera = () => {
   return (
-    <span className="loading loading-spinner loading-lg"></span>
+    <span className="loading loading-spinner loading-lg text-white"></span>
   );
 };
 
@@ -29,11 +29,7 @@ export default function Root() {
   const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
   const [backgroundPath, setBackgroundPath] = useState("")
   useEffect(() => {
-    console.log(currentWallpaper)
-
-   
     appDataDir().then(res => {
-
       const wallpaper_path = "wallpapers/" + currentWallpaper["collection"] + "/wallpaper-" + currentWallpaper["id"] + ".jpg"
       const full_path = res + wallpaper_path
       const assetUrl = convertFileSrc(full_path);
@@ -48,10 +44,8 @@ export default function Root() {
         const nextWallpaperDate = new Date(date)
         console.log(currect_date, nextWallpaperDate)
         if (currect_date > nextWallpaperDate) {
-          if (loading["load"])
-            return
-            return
-           nextWallpaper().then(() => {
+          if (loading["load"]) { return }
+          nextWallpaper().then(() => {
             get_interval().then(interval => {
               if (interval != null) {
                 const next_date = addMilliseconds(currect_date, interval)
@@ -62,8 +56,6 @@ export default function Root() {
           }
 
           )
-
-
         }
       })
     }, 5 * 1000);
@@ -146,7 +138,6 @@ export default function Root() {
     setLoading({ load: true, loadedOnce: true })
     const wallpaper = await getWallpaperFromFavorite(currentWallpaper)
     await set_current_wallpaper(wallpaper)
-
     setCurrentWallpaper(wallpaper)
     setLoading({ load: false, loadedOnce: true })
 
@@ -176,14 +167,14 @@ export default function Root() {
         loading.load && !loading.loadedOnce ? (
           <Loadera />
         ) : (
-          <main style={{ backgroundImage:'url('+ backgroundPath+")", backgroundSize: "400px 300px", backgroundRepeat:"no-repeat" }} className="flex min-h-screen flex-col items-center justify-between container rounded-md">
+          <main style={{ backgroundImage: 'url(' + backgroundPath + ")", backgroundSize: "400px 300px", backgroundRepeat: "no-repeat" }} className="flex min-h-screen flex-col items-center justify-between container rounded-md">
             {
               loading.load && loading.loadedOnce ? (
                 <div className='fixed bg-black/50 w-screen grid h-screen place-items-center gap-4'>
                   <div className='pt-10'>
                     <Loadera />
                   </div>
-                  <p className='pb-20'>Downloading your next favorite wallpaper</p>
+                  <p className='pb-20 text-white'>Downloading your next favorite wallpaper</p>
 
                 </div>
               ) : null
@@ -198,7 +189,7 @@ export default function Root() {
                         isFavorite={isFavorite} />
                     </button>
                   </div>
-                  <div className="flex-none h-5 w-5" >
+                  <div className="flex-none h-5 w-5 text-white" >
                     <SettingsButton />
                   </div>
                   {takeOnlyFromFavorite ? <div className="flex-none h-5 w-5 text-white " >
@@ -228,7 +219,7 @@ export default function Root() {
                 </div>
               </div>
             </div>
-            <img width={200}  src='/Users/amirbraham/Library/Application Support/com.amirbraham.artmuse/wallpapers/The Metropolitan Museum of Art/wallpaper-ae19bd78-b6ac-4a06-ba30-66800ad3b7f1.jpg'></img>
+            <img width={200} src='/Users/amirbraham/Library/Application Support/com.amirbraham.artmuse/wallpapers/The Metropolitan Museum of Art/wallpaper-ae19bd78-b6ac-4a06-ba30-66800ad3b7f1.jpg'></img>
           </main>)
       }
     </>
