@@ -39,21 +39,18 @@ export default function Root() {
   }, [currentWallpaper])
   useEffect(() => {
     setInterval(function () {
-      console.log("checking")
       const currect_date = new Date()
       get_next_wallpaper_date().then(date => {
         const nextWallpaperDate = new Date(date)
-        console.log(currect_date, nextWallpaperDate)
-        if (currect_date.getTime() > nextWallpaperDate.getTime()) {
+        if (nextWallpaperDate.getTime() > 0 && currect_date.getTime() > nextWallpaperDate.getTime()) {
           setIsChangingWallpaperInBackground(true)
         }
       })
-    }, 5 * 1000);
+    }, 30 * 1000);
   }, [])
 
   useEffect(() => {
     if(isChangingWallpaperInBackground) {
-      console.log("change wallpaper")
       nextWallpaper().then(() => {
         setIsChangingWallpaperInBackground(false)
         get_interval().then((interval) => {
