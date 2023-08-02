@@ -22,7 +22,7 @@ export const init = async () => {
   await store.set("has_been_initialized", true);
   await store.set("collection",COLLECTIONS[0])
   console.log("init get wallpaper")
-  const painting = await getWallpaper(1, 1,"The Metropolitan Museum of Art")
+  const painting = await getWallpaper(1, 1,COLLECTIONS[0])
   await set_current_wallpaper(painting)
   await store.save()
   return false
@@ -119,8 +119,7 @@ export const get_current_wallpaper = async () => {
 
 export const clear_store = async () => {
   await store.clear()
-  const res = await store.get("current_wallpaper")
-  console.log(res)
+  await init()
 }
 
 export const set_current_wallpaper = async (wallpaper) => {

@@ -14,8 +14,8 @@ export default function Favorites() {
     useEffect(() => {
         get_favorites().then(res => { console.log(res); setFavorites(res) })
     }, [])
-    return <main className="flex flex-col h-screen bg-neutral-100 overflow-x-hidden		">
-        <div className="flex flex-row basis-1/4  bg-neutral-300 w-screen  p-3 place-content-start">
+    return <main className="flex flex-col h-screen bg-neutral-100 	">
+        <div className="flex flex-row basis-1/4  bg-neutral-300 w-screen  p-3 place-content-start ">
             <div className="basis-1/12 ">
                 <Link to="/settings">
                     <ArrowLeftIcon className="h-5 pt-1 " />
@@ -28,7 +28,7 @@ export default function Favorites() {
 
             </div>
         </div>
-        <ul className="max-h-screen overflow-y-auto p-4">
+        <ul className="max-h-screen overflow-y-auto overflow-x-hidden	 p-4">
             {
                 favorites.map((painting, index) => <li key={painting["id"]} > <PaintingRow unfavorite={unfavorite} painting={painting} index={index} /></li>)
             }

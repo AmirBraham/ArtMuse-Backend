@@ -25,6 +25,7 @@ export const getWallpaper = async (limit: number, page: number, collection: stri
     method: 'GET',
     timeout: 30,
   });
+  console.log(response)
   let res = response["data"]
   res = res["paintings"][0]
   const painting = {

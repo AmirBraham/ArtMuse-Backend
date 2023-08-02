@@ -84,22 +84,22 @@ export default function Settings() {
                     handleChange
                 }>
                     <option value="Manually">Manually</option>
-                    <option value="60000">1 minute</option>
-
-                    <option value="600000">10 minutes</option>
+                    <option value="600000">15 minutes</option>
                     <option value="1800000">30 minutes</option>
-                    <option value="3600000">1 hour</option>
+                    <option value="21600000">1 hour</option>
+                    <option value="3600000">6 hour</option>
                     <option value="86400000">1 day</option>
-                </select>            </label>
+                </select>
+            </label>
         </div>
         <div>
-
 
         </div>
         <div className="flex flex-col basis-1/12 pb-3  items-center">
 
             <div className="text-xs pb-1">
-                <button onClick={clear_store}>Clear Cache</button>
+                <button onClick={() => {
+                    clear_store().then(() => window.location.reload())}}>Reset to default settings</button>
             </div>
             <div>
                 <p className="text-xs">Have a suggestion or a problem ? Reach out to us <a target="_blank" href="https://www.google.com"  >here</a> </p>
