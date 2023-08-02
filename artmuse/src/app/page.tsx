@@ -9,9 +9,9 @@ export default function Home() {
     <main className="flex h-screen flex-col items-center justify-between p-12">
       <div className='flex h-screen flex-col items-center justify-between p-12'>
         <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-          <p className="fixed left-0 top-0 flex w-full justify-center  backdrop-blur-2xl lg:static lg:w-auto  lg:rounded-xl lg:border  lg:p-4 ">
+          <a href="mailto:amirbrahamm@gmail.com" className="fixed left-0 top-0 flex w-full justify-center  backdrop-blur-2xl lg:static lg:w-auto  lg:rounded-xl lg:border  lg:p-4 ">
             Contact US
-          </p>
+          </a>
         </div>
 
 
@@ -116,7 +116,7 @@ export default function Home() {
         </div>
       </div>
       <div className='p-10 flex flex-col w-screen z-20 bg-neutral-200 place-items-center '>
-        <p className='text-lg'>Developed by Amir Braham</p>
+        <p className='text-md'>Developed with &#128151; by Amir Braham</p>
       </div>
 
     </main>
