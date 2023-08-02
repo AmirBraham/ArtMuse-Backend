@@ -8,7 +8,7 @@ import { ArrowRightIcon, ArrowLeftIcon, ArrowTopRightOnSquareIcon, ArrowPathIcon
 import { useEffect, useState } from 'react';
 import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_limit, get_next_wallpaper_date, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_next_wallpaper_date, set_page, get_interval } from '../state/manager';
 import { getWallpaper, getWallpaperFromFavorite } from '../state/api';
-import { addMilliseconds, getTime, parse } from 'date-fns';
+import { addMilliseconds, getTime, intervalToDuration, parse } from 'date-fns';
 import { appDataDir } from '@tauri-apps/api/path';
 import { convertFileSrc } from '@tauri-apps/api/tauri';
 
@@ -28,6 +28,7 @@ export default function Root() {
   const [collection, setCollection] = useState("")
   const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
   const [backgroundPath, setBackgroundPath] = useState("")
+  const [isChangingWallpaperInBackground,setIsChangingWallpaperInBackground] = useState(false)
   useEffect(() => {
     appDataDir().then(res => {
       const wallpaper_path = "wallpapers/" + currentWallpaper["collection"] + "/wallpaper-" + currentWallpaper["id"] + ".jpg"
@@ -43,23 +44,30 @@ export default function Root() {
       get_next_wallpaper_date().then(date => {
         const nextWallpaperDate = new Date(date)
         console.log(currect_date, nextWallpaperDate)
-        if (currect_date > nextWallpaperDate) {
-          if (loading["load"]) { return }
-          nextWallpaper().then(() => {
-            get_interval().then(interval => {
-              if (interval != null) {
-                const next_date = addMilliseconds(currect_date, interval)
-                set_next_wallpaper_date(next_date).then(() => window.location.reload())
-
-              }
-            })
-          }
-
-          )
+        if (currect_date.getTime() > nextWallpaperDate.getTime()) {
+          setIsChangingWallpaperInBackground(true)
         }
       })
     }, 5 * 1000);
   }, [])
+
+  useEffect(() => {
+    if(isChangingWallpaperInBackground) {
+      console.log("change wallpaper")
+      nextWallpaper().then(() => {
+        setIsChangingWallpaperInBackground(false)
+        get_interval().then((interval) => {
+          if(interval != null) {
+          const currect_date = new Date()
+          const next_date = addMilliseconds(currect_date, interval)
+          set_next_wallpaper_date(next_date).then(() => window.location.reload())
+          }
+        })
+        
+
+      })
+    }
+  },[isChangingWallpaperInBackground])
 
   useEffect(() => {
     get_next_wallpaper_date().then(res => {

@@ -84,6 +84,8 @@ export default function Settings() {
                     handleChange
                 }>
                     <option value="Manually">Manually</option>
+                    <option value="60000">1 minute</option>
+
                     <option value="600000">10 minutes</option>
                     <option value="1800000">30 minutes</option>
                     <option value="3600000">1 hour</option>
