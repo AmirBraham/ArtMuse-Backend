@@ -44,6 +44,7 @@ export const getWallpaper = async (limit: number, page: number, collection: stri
 export const downloadWallpaper = async (painting) => {
   const wallpaper_path = "wallpapers/" + painting["collection"] + "/wallpaper-" + painting["id"] + ".jpg"
   const already_has_wallpaper = await fs.exists(wallpaper_path, { dir: BaseDirectory.AppData })
+  console.log(already_has_wallpaper)
   if (already_has_wallpaper) {
     return painting
   }

@@ -9,6 +9,7 @@ const PaintingRow = ({ painting, index, unfavorite }) => {
         appDataDir().then(res =>{
             const wallpaper_path = "wallpapers/" + painting["collection"] + "/wallpaper-" + painting["id"] + ".jpg"
             const full_path = res + wallpaper_path
+
             const assetUrl = convertFileSrc(full_path);
             setImage(assetUrl)
         })

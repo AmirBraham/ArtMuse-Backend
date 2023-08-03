@@ -8,9 +8,10 @@ import { ArrowRightIcon, ArrowLeftIcon, ArrowTopRightOnSquareIcon, ArrowPathIcon
 import { useEffect, useState } from 'react';
 import { add_favorite, get_collection, get_current_wallpaper, get_favorites, get_limit, get_next_wallpaper_date, get_page, get_take_only_from_favorites, init, remove_favorite, set_current_wallpaper, set_next_wallpaper_date, set_page, get_interval } from '../state/manager';
 import { getWallpaper, getWallpaperFromFavorite } from '../state/api';
-import { addMilliseconds, getTime, intervalToDuration, parse } from 'date-fns';
+import { addMilliseconds } from 'date-fns';
 import { appDataDir } from '@tauri-apps/api/path';
 import { convertFileSrc } from '@tauri-apps/api/tauri';
+import { fs } from '@tauri-apps/api';
 
 const Loadera = () => {
   return (
@@ -24,17 +25,25 @@ export default function Root() {
     loadedOnce: false,
   });
   const [isFavorite, setIsFavorite] = useState(false)
-  const [currentWallpaper, setCurrentWallpaper] = useState({})
+  const [currentWallpaper, setCurrentWallpaper] = useState(null)
   const [collection, setCollection] = useState("")
   const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
   const [backgroundPath, setBackgroundPath] = useState("")
   const [isChangingWallpaperInBackground,setIsChangingWallpaperInBackground] = useState(false)
   useEffect(() => {
     appDataDir().then(res => {
+      if(currentWallpaper == null )
+        return
       const wallpaper_path = "wallpapers/" + currentWallpaper["collection"] + "/wallpaper-" + currentWallpaper["id"] + ".jpg"
       const full_path = res + wallpaper_path
+
       const assetUrl = convertFileSrc(full_path);
-      setBackgroundPath(assetUrl)
+      fs.exists(full_path).then(doesExists=>{
+        if(doesExists){
+          setBackgroundPath(assetUrl)
+        }
+      })
+
     })
   }, [currentWallpaper])
   useEffect(() => {
@@ -43,6 +52,7 @@ export default function Root() {
       get_next_wallpaper_date().then(date => {
         const nextWallpaperDate = new Date(date)
         if (nextWallpaperDate.getTime() > 0 && currect_date.getTime() > nextWallpaperDate.getTime()) {
+          console.log("change wallpaper")
           setIsChangingWallpaperInBackground(true)
         }
       })
@@ -68,7 +78,6 @@ export default function Root() {
 
   useEffect(() => {
     get_next_wallpaper_date().then(res => {
-      console.log("next wallpaper date : ", res)
     })
   }, [])
 
@@ -91,9 +100,11 @@ export default function Root() {
         setCurrentWallpaper(painting)
       }
     })
+
   }, [])
 
   useEffect(() => {
+    if(currentWallpaper == null) return
     check_favorite(currentWallpaper["id"]).then(res => {
       setIsFavorite(res)
     })
@@ -156,7 +167,6 @@ export default function Root() {
     if (prev_page - 1 <= 0) {
       prev_page = collection_size + 1
     }
-    console.log(prev_page)
 
     await set_page(prev_page - 1)
     const page = await get_page()
@@ -169,7 +179,7 @@ export default function Root() {
   return (
     <>
       {
-        loading.load && !loading.loadedOnce ? (
+        ((loading.load && !loading.loadedOnce ) || currentWallpaper == null) ? (
           <Loadera />
         ) : (
           <main style={{ backgroundImage: 'url(' + backgroundPath + ")", backgroundSize: "400px 300px", backgroundRepeat: "no-repeat" }} className="flex min-h-screen flex-col items-center justify-between container rounded-md">
@@ -224,7 +234,6 @@ export default function Root() {
                 </div>
               </div>
             </div>
-            <img width={200} src='/Users/amirbraham/Library/Application Support/com.amirbraham.artmuse/wallpapers/The Metropolitan Museum of Art/wallpaper-ae19bd78-b6ac-4a06-ba30-66800ad3b7f1.jpg'></img>
           </main>)
       }
     </>

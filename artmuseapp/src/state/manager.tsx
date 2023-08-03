@@ -1,6 +1,6 @@
 import { Store } from "tauri-plugin-store-api";
 import { COLLECTIONS, DEFAULT_INTERVAL_VALUE } from "./init";
-import { getWallpaper } from "./api";
+import { downloadWallpaper, getWallpaper } from "./api";
 import { invoke } from '@tauri-apps/api/tauri'
 import { appDataDir } from '@tauri-apps/api/path';
 import { enable, isEnabled, disable } from "tauri-plugin-autostart-api";
@@ -46,6 +46,7 @@ export const set_next_wallpaper_date = async (date: any) => {
 
 export const get_next_wallpaper_date = async () => {
   const next_wallpaper_date = await store.get("next_wallpaper_date")
+
   return next_wallpaper_date
 }
 
@@ -107,12 +108,17 @@ export const set_collection = async (collection) => {
 }
 export const get_current_wallpaper = async () => {
   const currect_wallpaper = await store.get("current_wallpaper")
-  if (currect_wallpaper != null && Object.keys(currect_wallpaper).length !== 0)
+
+  if (currect_wallpaper != null && Object.keys(currect_wallpaper).length !== 0){
+    await downloadWallpaper(currect_wallpaper) // checks if wallpaper exists on disk else downloads it
     return currect_wallpaper
+  }
+
   const collection = await get_collection()
-  console.log("getting current wallpaper")
+
   const painting = await getWallpaper(1, 1,collection)
   await set_current_wallpaper(painting)
+
   return painting
   // if we reached this point , this is the first time the user has opened our app , we will need to fetch a random wallpaper and set other params
 }
