@@ -19,6 +19,8 @@ const Loadera = () => {
   );
 };
 
+
+
 export default function Root() {
   const [loading, setLoading] = useState({
     load: true,
@@ -30,6 +32,8 @@ export default function Root() {
   const [takeOnlyFromFavorite, setTakeOnlyFromFavorite] = useState(false)
   const [backgroundPath, setBackgroundPath] = useState("")
   const [isChangingWallpaperInBackground,setIsChangingWallpaperInBackground] = useState(false)
+  
+
   useEffect(() => {
     appDataDir().then(res => {
       if(currentWallpaper == null )
@@ -144,6 +148,7 @@ export default function Root() {
     await set_page(prev_page + 1)
     const page = await get_page()
     const limit = await get_limit()
+
     const wallpaper = await getWallpaper(limit, page, collection)
     await set_current_wallpaper(wallpaper)
     setCurrentWallpaper(wallpaper)

@@ -2,7 +2,7 @@ import { API_BASE_URL } from "./init";
 import * as fs from "@tauri-apps/api/fs";
 import { getClient, ResponseType } from "@tauri-apps/api/http";
 import { BaseDirectory } from '@tauri-apps/api/path';
-import {  get_favorites} from "./manager";
+import { get_favorites } from "./manager";
 import { fetch } from '@tauri-apps/api/http';
 
 export const getWallpaperFromFavorite = async (current_wallpaper) => {
@@ -39,6 +39,8 @@ export const getWallpaper = async (limit: number, page: number, collection: stri
   }
   await downloadWallpaper(painting)
   return painting
+
+
 }
 
 export const downloadWallpaper = async (painting) => {

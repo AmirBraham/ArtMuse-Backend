@@ -120,7 +120,6 @@ export const get_current_wallpaper = async () => {
   await set_current_wallpaper(painting)
 
   return painting
-  // if we reached this point , this is the first time the user has opened our app , we will need to fetch a random wallpaper and set other params
 }
 
 export const clear_store = async () => {

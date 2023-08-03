@@ -93,13 +93,13 @@ export default function Settings() {
             </label>
         </div>
         <div>
-
         </div>
         <div className="flex flex-col basis-1/12 pb-3  items-center">
 
             <div className="text-xs pb-1">
                 <button onClick={() => {
-                    clear_store().then(() => window.location.reload())}}>Reset to default settings</button>
+                    clear_store().then(() => window.location.reload())
+                }}>Reset to default settings</button>
             </div>
             <div>
                 <p className="text-xs">Have a suggestion or a problem ? Reach out to us <a target="_blank" href="https://www.google.com"  >here</a> </p>
