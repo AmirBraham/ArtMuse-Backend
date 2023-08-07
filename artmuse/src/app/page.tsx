@@ -3,6 +3,7 @@ import Image from 'next/image'
 import FloatingDiv from './FloatingDiv'
 import { CheckBadgeIcon } from '@heroicons/react/24/outline'
 import { TypeAnimation } from 'react-type-animation';
+import Script from 'next/script'
 
 export default function Home() {
   return (
@@ -75,16 +76,14 @@ export default function Home() {
             Get Artmuse now
           </p>
 
-          <p className='text-2xl text-center'>
-            Available now on Windows
+          <p className='text-2xl text-center pb-3'>
+            Available now on Windows & Mac
           </p>
-          <p className='text-md text-gray-800	 text-center'>
-            soon on Mac & Linux
-          </p>
+
           
-          <div className="pl-5 pt-2">
-            <Image className="mx-auto" src="/Get it from MS.png" width={200} height={300} alt='' />
-          </div>
+      <Script src="https://gumroad.com/js/gumroad.js" />
+
+            <a className="gumroad-button" href="https://amirbrahamm.gumroad.com/l/artmuse">Get it on </a>
         </div>
         <div>
           <div className='flex flex-col'>
