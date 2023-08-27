@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import models
 import painting
-
+import paintingMobile
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine
 
@@ -23,6 +23,7 @@ app.add_middleware(
 )
 
 app.include_router(painting.router, tags=['Paintings'], prefix='/api/paintings')
+app.include_router(paintingMobile.router, tags=['PaintingsMobile'], prefix='/api/paintings_app')
 
 
 @app.get("/paintings_collections")

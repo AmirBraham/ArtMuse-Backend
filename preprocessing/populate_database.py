@@ -10,7 +10,7 @@ headers = {
     'Content-Type': 'application/json',
 }
 
-DEV= False
+DEV= True
 
 if(DEV):
     API_URL = "http://127.0.0.1:8000/api/"
@@ -20,7 +20,7 @@ else:
 
 def populate_db_metmuseum():
     print("populating db with metmuseum")
-    df = pd.read_csv("../Database/metmuseum_filtered.csv")
+    df = pd.read_csv("Database/metmuseum_filtered.csv")
     df['Collection']='The Metropolitan Museum of Art'
     df = df[['Title','Artist Display Name','Object Begin Date','Object End Date','image_url','Link Resource','Collection']]
     rename_columns = {
@@ -37,7 +37,7 @@ def populate_db_metmuseum():
     paintings =df.to_dict('records')
     with open("a.txt","w") as f:
         f.write(str(paintings))
-    response = requests.post(API_URL+'paintings/paintings', headers=headers, json=paintings)
+    response = requests.post(API_URL+'paintings_app/paintings', headers=headers, json=paintings)
     
     print(response)
 

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 
 class PaintingBaseSchema(BaseModel):
-    id: str | None = None
+    id: str = None
     title: str = None
     artistDisplayName: str 
     objectBeginDate: int

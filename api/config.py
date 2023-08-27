@@ -1,9 +1,10 @@
+from typing import Optional
 from pydantic import BaseSettings
 import os
 
 
 class Settings(BaseSettings):
-    ON_HEROKU: str | None
+    ON_HEROKU: Optional["str"]=None
     DATABASE_PORT: int
     POSTGRES_PASSWORD: str
     POSTGRES_USER: str
@@ -11,7 +12,7 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str
     POSTGRES_HOSTNAME: str
     SSL_MODE: str
-    DATABASE_URL: str | None
+    DATABASE_URL: Optional["str"]=None
 
     class Config:
         env_file = '.env'

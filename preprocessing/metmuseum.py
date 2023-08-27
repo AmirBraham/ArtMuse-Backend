@@ -27,8 +27,8 @@ def calculateAspectRatio(row):
 
 
 def filter():
-    ASPECT_RATIOS = [16/9, 16/10]
-    data = pd.read_csv("../Database/metmuseum.csv", sep=",", low_memory=False)
+    ASPECT_RATIOS = [9/16, 9/18,9/19,9/19.5]
+    data = pd.read_csv("Database/metmuseum.csv", sep=",", low_memory=False)
     paintings = data[data["Object Name"] == "Painting"]
     public_domain_paintings = paintings[paintings["Is Public Domain"] == True]
     public_domain_paintings["ratio"] = public_domain_paintings.apply(
@@ -43,7 +43,7 @@ def filter():
     print(len(public_domain_paintings))
 
     public_domain_paintings.to_csv(
-        "../Database/metmuseum_filtered.csv", encoding='utf-8', index=False)
+        "Database/metmuseum_filtered.csv", encoding='utf-8', index=False)
     print("filtered csv file ! ")
 
 
@@ -69,9 +69,9 @@ def getImageURL(url):
 
 
 def main():
-    csv_file = Path("../Database/metmuseum_filtered.csv")
+    csv_file = Path("Database/metmuseum_filtered.csv")
     if csv_file.is_file():
-        paintings = pd.read_csv("../Database/metmuseum_filtered.csv")
+        paintings = pd.read_csv("Database/metmuseum_filtered.csv")
         paintings = paintings.reset_index(drop=True)
         for i in tqdm(range(len(paintings))):
             url = paintings.iloc[i]["Link Resource"]
@@ -80,10 +80,10 @@ def main():
                 paintings.at[i, "image_url"] = image_url
             if (i % 10 == 0 and i > 0):
                 paintings.to_csv(
-                    "../Database/metmuseum_filtered.csv", encoding='utf-8', index=False)
+                    "Database/metmuseum_filtered.csv", encoding='utf-8', index=False)
         paintings = paintings[paintings['Title'].notna()]
         paintings = paintings[paintings['Artist Display Name'].notna()]
-        paintings.to_csv("../Database/metmuseum_filtered.csv",encoding='utf-8', index=False)
+        paintings.to_csv("Database/metmuseum_filtered.csv",encoding='utf-8', index=False)
     else:
         print("filtering csv file")
         filter()
