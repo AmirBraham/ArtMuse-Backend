@@ -10,7 +10,7 @@ headers = {
     'Content-Type': 'application/json',
 }
 
-DEV= True
+DEV= False
 
 if(DEV):
     API_URL = "http://127.0.0.1:8000/api/"
