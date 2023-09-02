@@ -11,10 +11,11 @@ class Painting(Base):
     title = Column(String, nullable=False)
     artistDisplayName = Column(String, nullable=False)
     objectBeginDate = Column(Integer, nullable=True)
-    objectEndDate = Column(Integer, nullable=False)
+    objectEndDate = Column(Integer, nullable=True)
     collection = Column(String,nullable=False)
     resourceLink = Column(String,nullable=False)
     imageLink = Column(String,nullable=False)
+    description = Column(String,nullable=True)
 
 class PaintingMobile(Base):
     __tablename__ = 'paintings_mobile'
@@ -27,3 +28,4 @@ class PaintingMobile(Base):
     collection = Column(String,nullable=False)
     resourceLink = Column(String,nullable=False)
     imageLink = Column(String,nullable=False)
+    description = Column(String,nullable=True)

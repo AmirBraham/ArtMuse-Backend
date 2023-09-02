@@ -47,25 +47,25 @@ def filter():
     print("filtered csv file ! ")
 
 
-def getImageURL(url):
-    if not validators.url(url):
-        print(f"url is not valid , {url}")
-        return None
-    try:
-        r = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-        html_page = html.unescape(r.text)
-        soup = BeautifulSoup(html_page, features="lxml")
-    except Exception as err:
-        print("ERR OCCURED : \n ")
-        print(err)
-        return None
+def getImageURL(soup):
     URLS = []
     for a in soup.find_all('a', {'class': 'gtm__download__image'}, href=True):
         URLS.append(a['href'])
     if (len(URLS) == 0):
-        print(f"Could not get image URL from : {url}")
+        print(f"Could not get image URL from : {soup}")
         return None
     return URLS[0]
+
+def getDescription(soup):
+    DESC = []
+    for p in soup.find_all('div',{'class':'artwork__intro__desc'}):
+        DESC.append(p.text)
+    if (len(DESC) == 0):
+        print(f"Could not get DESC : {soup}")
+        return None
+    return DESC[0]
+
+    
 
 
 def main():
@@ -75,9 +75,23 @@ def main():
         paintings = paintings.reset_index(drop=True)
         for i in tqdm(range(len(paintings))):
             url = paintings.iloc[i]["Link Resource"]
-            image_url = getImageURL(url)
+            if not validators.url(url):
+                print(f"url is not valid , {url}")
+                continue
+            try:
+                r = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+                html_page = html.unescape(r.text)
+                soup = BeautifulSoup(html_page, features="lxml")
+            except Exception as err:
+                print("ERR OCCURED : \n ")
+                print(err)
+                continue
+            image_url = getImageURL(soup)
+            description = getDescription(soup)
             if (image_url is not None):
                 paintings.at[i, "image_url"] = image_url
+            if(description is not None):
+                paintings.at[i, "description"] = description
             if (i % 10 == 0 and i > 0):
                 paintings.to_csv(
                     "Database/metmuseum_filtered.csv", encoding='utf-8', index=False)

@@ -11,6 +11,7 @@ class PaintingBaseSchema(BaseModel):
     collection: str
     resourceLink: str
     imageLink :str
+    description:str
 
     class Config:
         orm_mode = True

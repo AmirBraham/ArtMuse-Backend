@@ -22,7 +22,7 @@ def populate_db_metmuseum():
     print("populating db with metmuseum")
     df = pd.read_csv("Database/metmuseum_filtered.csv")
     df['Collection']='The Metropolitan Museum of Art'
-    df = df[['Title','Artist Display Name','Object Begin Date','Object End Date','image_url','Link Resource','Collection']]
+    df = df[['Title','Artist Display Name','Object Begin Date','Object End Date','image_url','Link Resource','Collection','description']]
     rename_columns = {
         'Title':'title',
         'Artist Display Name':'artistDisplayName',
@@ -30,7 +30,9 @@ def populate_db_metmuseum():
         'Object End Date':'objectEndDate',
         'image_url':'imageLink',
         'Link Resource':'resourceLink',
-        'Collection':'collection'
+        'Collection':'collection',
+        
+        
     }
     df = df.sample(frac=1) #shuffling rows to avoid getting same artist ten times in a row
     df.rename(columns=rename_columns,inplace=True)
