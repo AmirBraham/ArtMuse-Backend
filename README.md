@@ -1,3 +1,7 @@
+<h2>ArtMuse Backend </h2>
+Contains all code for scraping , preprocessing the data and hosting it on heroku as well as a menu bar app ( windows/macos) built with Tauri
+
+
 Database folder is missing <br/>
 
 Download  <a href="https://github.com/metmuseum/openaccess/blob/master/MetObjects.csv ">metmuseum csv file</a>
